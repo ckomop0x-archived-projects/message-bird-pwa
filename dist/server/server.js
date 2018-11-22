@@ -31,13 +31,13 @@ wss.on('connection', (ws) => {
             wss.clients
                 .forEach(client => {
                 if (client != ws) {
-                    console.log(message);
-                    // client.send(`Hello, broadcast message -> ${message}`);
+                    client.send(`Hello, broadcast message -> ${message}`);
                 }
             });
         }
         else {
-            ws.send(`Hello, you sent -> ${message}, last SMS is ${messageFromApi}`);
+            console.log(messageFromApi);
+            ws.send(`Hello, you sent -> ${message}, last SMS is ${1 + 1}`);
         }
     });
     //send immediatly a feedback to the incoming connection
