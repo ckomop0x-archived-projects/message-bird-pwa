@@ -1,10 +1,14 @@
 import * as express from 'express';
 import * as http from 'http';
+const path = require('path');
 import * as WebSocket from 'ws';
 import * as bodyParser from "body-parser";
 
 const app = express();
-
+app.use(express.static(path.join(__dirname, '../client')));
+app.get('*', function(req, res){
+    res.sendFile(path.join(__dirname, '../client/index.html'));
+});
 //initialize a simple http server
 const server = http.createServer(app);
 
@@ -57,7 +61,7 @@ wss.on('connection', (ws: WebSocket) => {
 
 app.post("/", urlencodedParser, function (request, response) {
     if(!request.body) return response.sendStatus(400);
-    console.log('POST message:=>', request.body);
+    console.log('POST message:=>', request);
     messageFromApi = request.body;
     // console.log(wss);
     wss.clients

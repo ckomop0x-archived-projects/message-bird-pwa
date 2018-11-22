@@ -2,9 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const http = require("http");
+const path = require('path');
 const WebSocket = require("ws");
 const bodyParser = require("body-parser");
 const app = express();
+app.use(express.static(path.join(__dirname, '../client')));
+app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, '../client/index.html'));
+});
 //initialize a simple http server
 const server = http.createServer(app);
 //initialize the WebSocket server instance
