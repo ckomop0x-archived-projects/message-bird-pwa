@@ -36,10 +36,7 @@ wss.on('connection', (ws) => {
             });
         }
         else {
-            ws.send(`
-            Hello, you sent -> ${message},
-            last SMS is ${messageFromApi}
-            `);
+            ws.send(`Hello, you sent -> ${message}, last SMS is ${messageFromApi}`);
         }
     });
     //send immediatly a feedback to the incoming connection
