@@ -16,7 +16,7 @@ app.post("/", urlencodedParser, function (request, response) {
     if (!request.body)
         return response.sendStatus(400);
     console.log('POST message:', request.body);
-    messageFromApi = request;
+    messageFromApi = request.body;
     response.send(`${request.body.userName} - ${request.body.userAge}`);
 });
 wss.on('connection', (ws) => {
