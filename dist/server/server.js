@@ -37,7 +37,11 @@ wss.on('connection', (ws) => {
         }
         else {
             console.log('messageFromApi ===>', messageFromApi);
-            ws.send(`Hello, you sent -> ${message}, last SMS is ${1 + 1}`);
+            ws.send(`
+            Hello, you sent -> ${message},
+            last SMS is from ${messageFromApi.originator}
+            to ${messageFromApi.receiver},
+            message: ${messageFromApi.payload}`);
         }
     });
     //send immediatly a feedback to the incoming connection
