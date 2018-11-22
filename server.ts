@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as http from 'http';
 import * as WebSocket from 'ws';
+import * as bodyParser from "body-parser";
 
 const app = express();
 
@@ -9,6 +10,20 @@ const server = http.createServer(app);
 
 //initialize the WebSocket server instance
 const wss = new WebSocket.Server({ server });
+
+// создаем парсер для данных application/x-www-form-urlencoded
+const urlencodedParser = bodyParser.urlencoded({extended: false});
+
+let messageFromApi: any;
+
+app.post("/", urlencodedParser, function (request, response) {
+    if(!request.body) return response.sendStatus(400);
+    console.log('POST message:', request.body);
+    messageFromApi = request.body;
+    response.send(`${request.body.userName} - ${request.body.userAge}`);
+});
+
+
 
 wss.on('connection', (ws: WebSocket) => {
 
@@ -32,7 +47,10 @@ wss.on('connection', (ws: WebSocket) => {
                 });
 
         } else {
-            ws.send(`Hello, you sent -> ${message}`);
+            ws.send(`
+            Hello, you sent -> ${message},
+            last SMS is ${messageFromApi}
+            `);
         }
     });
 
