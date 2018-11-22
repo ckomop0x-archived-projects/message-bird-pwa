@@ -12,11 +12,11 @@ const wss = new WebSocket.Server({ server });
 // создаем парсер для данных application/x-www-form-urlencoded
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 let messageFromApi;
-app.post("/", function (request, response) {
+app.post("/", urlencodedParser, function (request, response) {
     if (!request.body)
         return response.sendStatus(400);
     console.log('POST message:', request.body);
-    messageFromApi = request.body;
+    messageFromApi = request;
     response.send(`${request.body.userName} - ${request.body.userAge}`);
 });
 wss.on('connection', (ws) => {
