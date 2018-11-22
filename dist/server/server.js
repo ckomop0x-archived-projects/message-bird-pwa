@@ -12,7 +12,7 @@ const wss = new WebSocket.Server({ server });
 // создаем парсер для данных application/x-www-form-urlencoded
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 let messageFromApi;
-app.post("/", urlencodedParser, function (request, response) {
+app.post("/", function (request, response) {
     if (!request.body)
         return response.sendStatus(400);
     console.log('POST message:', request.body);
@@ -36,7 +36,7 @@ wss.on('connection', (ws) => {
             });
         }
         else {
-            console.log(messageFromApi);
+            console.log('messageFromApi ===>', messageFromApi);
             ws.send(`Hello, you sent -> ${message}, last SMS is ${1 + 1}`);
         }
     });
