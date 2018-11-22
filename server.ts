@@ -16,12 +16,12 @@ const urlencodedParser = bodyParser.urlencoded({extended: false});
 
 let messageFromApi: any;
 
-app.post("/", urlencodedParser, function (request, response) {
-    if(!request.body) return response.sendStatus(400);
-    console.log('POST message:', request.body);
-    messageFromApi = request.body;
-    response.send(`${request.body.userName} - ${request.body.userAge}`);
-});
+// app.post("/", urlencodedParser, function (request, response) {
+//     if(!request.body) return response.sendStatus(400);
+//     console.log('POST message:', request.body);
+//     messageFromApi = request.body;
+//     response.send(`${request.body.userName} - ${request.body.userAge}`);
+// });
 
 
 
@@ -33,29 +33,44 @@ wss.on('connection', (ws: WebSocket) => {
         //log the received message and send it back to the client
         console.log('received: %s', message);
 
-        const broadcastRegex = /^broadcast\:/;
+        // const broadcastRegex = /^broadcast\:/;
 
-        if (broadcastRegex.test(message)) {
-            message = message.replace(broadcastRegex, '');
+        // if (broadcastRegex.test(message)) {
+        //     message = message.replace(broadcastRegex, '');
 
             //send back the message to the other clients
-            wss.clients
-                .forEach(client => {
-                    if (client != ws) {
-                        client.send(`Hello, broadcast message -> ${message}`);
-                    }
-                });
 
-        } else {
-            ws.send(`
-            Hello, you sent -> ${message},
-            last SMS is ${messageFromApi}
-            `);
-        }
+
+        // } else {
+        //     console.log('messageFromApi ===>', messageFromApi);
+        //     ws.send(`
+        //     Hello, you sent -> ${message},
+        //     last SMS is from ${messageFromApi.originator}
+        //     to ${messageFromApi.receiver},
+        //     message: ${messageFromApi.payload}`);
+        // }
     });
 
     //send immediatly a feedback to the incoming connection
     ws.send('Hi there, I am a WebSocket server');
+});
+
+app.post("/", urlencodedParser, function (request, response) {
+    if(!request.body) return response.sendStatus(400);
+    console.log('POST message:=>', request.body);
+    messageFromApi = request.body;
+    // console.log(wss);
+    wss.clients
+        .forEach(client => {
+            // if (client != ws) {
+                client.send(`
+                    last SMS is from ${messageFromApi.originator}
+                    to ${messageFromApi.receiver},
+                    message: ${messageFromApi.payload}
+                `);
+            }
+        );
+    response.send(`${request.body.userName} - ${request.body.userAge}`);
 });
 
 //start our server
