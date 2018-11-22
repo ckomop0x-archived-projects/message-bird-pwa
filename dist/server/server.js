@@ -47,7 +47,7 @@ wss.on('connection', (ws) => {
 app.post("/", urlencodedParser, function (request, response) {
     if (!request.body)
         return response.sendStatus(400);
-    console.log('POST message:=>', request.body);
+    console.log('POST message:=>', request);
     messageFromApi = request.body;
     // console.log(wss);
     wss.clients
