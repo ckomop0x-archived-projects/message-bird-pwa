@@ -5,8 +5,7 @@
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "lint:write": "tslint -c tslint.json 'src/**/*.ts' --fix",
-    "prestart": "buildclient && buildserver",
-    "start": "node ./dist/server/server.js",
+    "start": "buildclient && buildserver && node ./dist/server/server.js",
     "prettier": "prettier --write src/**/*.{ts,tsx}",
     "buildserver": "tsc",
     "buildclient": "rm -rf dist/client && NODE_ENV='production' webpack -p",
