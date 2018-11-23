@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {NavLink} from 'react-router-dom';
+import CurrencySymbol from '../CurrencySymbol/index';
 import {HeaderStyled, HeaderMenu} from './styles';
 
 export interface HeaderProps {
@@ -26,8 +27,15 @@ const Header = (props: HeaderProps) => {
                     New message
                 </NavLink>
             </HeaderMenu>
-            <div>
-                {balance && balance.type}: {balance && balance.amount}
+            <div className="ballance">
+                <div className="credit-type">Balance</div>
+                <div id="user-balance" className="credit-amount js-counter critical">
+                    {balance && balance.type ? (
+                        <div>
+                            <CurrencySymbol currency={balance.type}/>{balance.amount}
+                        </div>
+                    ) : null}
+                </div>
             </div>
         </HeaderStyled>
     );
