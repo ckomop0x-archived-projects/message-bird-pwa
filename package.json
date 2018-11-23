@@ -5,9 +5,9 @@
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "lint:write": "tslint -c tslint.json 'src/**/*.ts' --fix",
-    "start": "rm -rf dist/client && NODE_ENV='production' webpack -p && tsc && node ./dist/server/server.js",
+    "start": "node ./dist/server/server.js",
     "prettier": "prettier --write src/**/*.{ts,tsx}",
-    "heroku-prebuild": "npm install --dev",
+    "heroku-prebuild": "npm install --dev && npm buildclient && npm buildserver",
     "buildserver": "tsc",
     "buildclient": "rm -rf dist/client && NODE_ENV='production' webpack -p",
     "startdev": "node_modules/.bin/webpack-dev-server",
