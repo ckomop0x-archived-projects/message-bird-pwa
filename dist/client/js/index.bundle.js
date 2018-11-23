@@ -64,7 +64,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "771aa5013895acb24ce1";
+/******/ 	var hotCurrentHash = "c5789569aca125fc22a6";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -50419,20 +50419,25 @@ var Send = (function (_super) {
         _this.onOriginatorChange = _this.onOriginatorChange.bind(_this);
         _this.onRecipientChange = _this.onRecipientChange.bind(_this);
         _this.onMessageChange = _this.onMessageChange.bind(_this);
+        _this.state = {
+            originator: 0,
+            recipient: 0,
+            message: ''
+        };
         return _this;
     }
     Send.prototype.onRecipientChange = function (event) {
         var element = event.target;
         var value = element.value;
         this.setState({
-            recipient: Number(value) || undefined
+            recipient: Number(value) || 0
         });
     };
     Send.prototype.onOriginatorChange = function (event) {
         var element = event.target;
         var value = element.value;
         this.setState({
-            originator: Number(value) || undefined
+            originator: Number(value) || 0
         });
     };
     Send.prototype.onMessageChange = function (event) {
