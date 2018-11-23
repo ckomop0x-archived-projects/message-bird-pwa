@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the heading 1`] = `
+<ThemeProvider
+  theme={
+    Object {
+      "gray1": "#353238",
+      "gray2": "#E0E0E0",
+      "gray3": "#EDF5FC",
+      "grid": 8,
+      "primaryRed": "#a50017",
+      "primaryRedLighten": "#7f1e1e",
+      "secondaryFont": "'Exo 2', sans-serif",
+    }
+  }
+>
+  <styled.div
+    id="main-app"
+  >
+    <GlobalStyleComponent
+      suppressMultiMountWarning={false}
+    />
+    <GlobalStyleComponent
+      suppressMultiMountWarning={false}
+    />
+    <Header />
+    <Seasons />
+    <Footer />
+  </styled.div>
+</ThemeProvider>
+`;

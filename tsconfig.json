@@ -1,16 +1,33 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "outDir": "./dist/server",
+    "target": "es5",
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react",
+    "noEmit": false,
+    "outDir": "./dist/",
     "strict": true,
+    "preserveConstEnums": true,
+    "removeComments": true,
     "sourceMap": true,
-    "typeRoots": [
-      "node_modules/@types"
+    "noEmitHelpers": true,
+    "importHelpers": true,
+    "noImplicitAny": true,
+    "noUnusedParameters": true,
+    "module": "commonjs",
+    "lib": [
+      "es2015",
+      "es2017",
+      "dom"
     ]
   },
+  "include": [
+    "./src/scripts/server/server.ts",
+    "./src/scripts/client/index.tsx"
+  ],
   "exclude": [
+    "node_modules",
     "dist",
-    "node_modules"
+    "**/*.spec.ts",
+    "**/*.spec.js"
   ]
 }
