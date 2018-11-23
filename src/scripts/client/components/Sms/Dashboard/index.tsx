@@ -90,7 +90,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
 
         return (
             <DashboardStyled>
-                <Websocket url="ws://localhost" onMessage={this.handleData.bind(this)} />
+                <Websocket url="ws://message-bird.herokuapp.com" onMessage={this.handleData.bind(this)} />
                 {messages !== [] ? (
                     <>
                         <div>Below you'll find an overview of the sent and received messages for the last 30 days.</div>
