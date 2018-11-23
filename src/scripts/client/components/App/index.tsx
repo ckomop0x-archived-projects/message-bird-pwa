@@ -6,7 +6,7 @@ import Login from '../Login/index';
 import {GlobalStyle} from '../styles/GlobalStyles';
 import {NormalizeStyles} from '../styles/NormalizeStyles';
 import {themeStyles} from '../styles/themeStyles';
-import {Container} from './AppStyles';
+import {Container} from './styles';
 import LeftMenu from '../LeftMenu';
 import RightContainer from '../RightContainer';
 

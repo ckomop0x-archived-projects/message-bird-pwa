@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {NavLink} from 'react-router-dom';
-import {HeaderStyled, HeaderMenu} from './header-styles';
+import {HeaderStyled, HeaderMenu} from './styles';
 
 export interface HeaderProps {
     [key: string]: any;

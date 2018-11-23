@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Header from '../Header';
 import Sms from '../Sms/index';
-import {RightContainerStyled} from './right-container-styles';
+import {RightContainerStyled} from './styles';
 
 const RightContainer = (props: any) => (
     <RightContainerStyled>

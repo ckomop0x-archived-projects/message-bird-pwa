@@ -17,7 +17,7 @@ export interface SendProps {
 }
 
 export default class Send extends React.PureComponent<SendProps, SendState> {
-    constructor (props: SendProps) {
+    constructor(props: SendProps) {
         super(props);
 
         this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -33,7 +33,7 @@ export default class Send extends React.PureComponent<SendProps, SendState> {
         };
     }
 
-    private onRecipientChange (event: React.FormEvent<HTMLInputElement>): void {
+    private onRecipientChange(event: React.FormEvent<HTMLInputElement>): void {
         const element: HTMLInputElement = event.target as HTMLInputElement;
         const {value} = element;
 
@@ -43,7 +43,7 @@ export default class Send extends React.PureComponent<SendProps, SendState> {
         });
     }
 
-    private handleBlur (event: React.FormEvent<HTMLInputElement>): void {
+    private handleBlur(event: React.FormEvent<HTMLInputElement>): void {
         const element: HTMLInputElement = event.target as HTMLInputElement;
         const {value, name} = element;
 
@@ -52,14 +52,14 @@ export default class Send extends React.PureComponent<SendProps, SendState> {
                 if (!value) {
                     this.setState({recipientError: 'Recipient Cannot be Blank!'});
                 } else if (value.toString().length < 8) {
-                    this.setState({recipientError: 'Ah, that\'s a bit too short for a phone number.'});
+                    this.setState({recipientError: "Ah, that's a bit too short for a phone number."});
                 }
                 break;
             case 'originator':
                 if (!value) {
                     this.setState({originatorError: 'Originator Cannot be Blank!'});
                 } else if (value.toString().length < 8) {
-                    this.setState({originatorError: 'Ah, that\'s a bit too short for a phone number.'});
+                    this.setState({originatorError: "Ah, that's a bit too short for a phone number."});
                 }
                 break;
             default:
@@ -67,7 +67,7 @@ export default class Send extends React.PureComponent<SendProps, SendState> {
         }
     }
 
-    private onOriginatorChange (event: React.FormEvent<HTMLInputElement>): void {
+    private onOriginatorChange(event: React.FormEvent<HTMLInputElement>): void {
         const element: HTMLInputElement = event.target as HTMLInputElement;
         const {value} = element;
 
@@ -76,7 +76,7 @@ export default class Send extends React.PureComponent<SendProps, SendState> {
         });
     }
 
-    private onMessageChange (event: React.FormEvent<HTMLTextAreaElement>): void {
+    private onMessageChange(event: React.FormEvent<HTMLTextAreaElement>): void {
         const element: HTMLTextAreaElement = event.target as HTMLTextAreaElement;
         const {value} = element;
 
@@ -85,7 +85,7 @@ export default class Send extends React.PureComponent<SendProps, SendState> {
         });
     }
 
-    private onFormSubmit (event: React.FormEvent<HTMLFormElement>): void {
+    private onFormSubmit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
 
         if (!this.state.originator) {
@@ -95,7 +95,7 @@ export default class Send extends React.PureComponent<SendProps, SendState> {
 
         if (this.state.recipient.toString().length < 8) {
             this.setState({
-                recipientError: 'Ah, that\'s a bit too short for a phone number.'
+                recipientError: "Ah, that's a bit too short for a phone number."
             });
             return;
         }
@@ -119,7 +119,7 @@ export default class Send extends React.PureComponent<SendProps, SendState> {
         this.defaultState();
     }
 
-    private defaultState () {
+    private defaultState() {
         this.setState({
             originator: 0,
             recipient: 0,
@@ -130,15 +130,15 @@ export default class Send extends React.PureComponent<SendProps, SendState> {
         });
     }
 
-    componentDidMount () {
+    componentDidMount() {
         NProgress.done();
     }
 
-    componentWillMount () {
+    componentWillMount() {
         NProgress.start();
     }
 
-    render () {
+    render() {
         return (
             <DashboardStyled>
                 <SendForm onSubmit={this.onFormSubmit}>
@@ -177,18 +177,18 @@ export default class Send extends React.PureComponent<SendProps, SendState> {
                             onChange={this.onMessageChange}
                         />
                         <span>
-                      {this.state.message.length}/1377,{' '}
-                            {this.state.message.length === 0
-                                ? ' 0'
-                                : Math.floor(this.state.message.length / 160 + 1)}{' '}
-                            SMS
-                    </span>
-                        <span className="error-msg">
-                  {this.state.messageError}
-                </span>
+                            <div className="smsCount">
+                                {this.state.message.length}/1377,{' '}
+                                {this.state.message.length === 0
+                                    ? ' 0'
+                                    : Math.floor(this.state.message.length / 160 + 1)}{' '}
+                                SMS
+                            </div>
+                        </span>
+                        <span className="error-msg">{this.state.messageError}</span>
                     </FormTextarea>
                     <SendButton type="submit">
-                        <i className="fa fa-comment"/>
+                        <i className="fa fa-comment" />
                         Send SMS
                     </SendButton>
                 </SendForm>

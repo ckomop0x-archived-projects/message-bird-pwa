@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
-import {Logo, LeftMenuStyled, LeftMenuIcon, LogOutButton} from './left-menu-styles';
+import {Logo, LeftMenuStyled, LeftMenuIcon, LogOutButton} from './styles';
 
 export interface LeftMenuProps {
     onExit(): void;

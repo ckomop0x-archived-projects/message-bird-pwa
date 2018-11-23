@@ -7,17 +7,29 @@ export const HeaderStyled = styled.header`
     margin: 0;
     position: relative;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 
     h1 {
-        margin: 0;
+        text-align: center;
+          
+        @media (min-width: 600px) {   
+            margin: 0 ${({theme}) => theme.grid * 4}px 0 0;
+        }   
+    }
+    
+    @media (min-width: 600px) {   
+        flex-direction: row;;
     }
 `;
 
 export const HeaderMenu = styled.div`
     display: flex;
     align-items: center;
-    flex-direction: row;
+    flex-direction: column;
+    
+    @media (min-width: 600px) {   
+        flex-direction: row;;
+    }
 
     .nav-item {
         white-space: nowrap;

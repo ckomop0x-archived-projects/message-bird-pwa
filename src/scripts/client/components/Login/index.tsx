@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {BigLogo, LoginStyled} from './login-styles';
+import {BigLogo, LoginStyled} from './styles';
 
 interface LoginProps {
     error?: Error;

@@ -22,7 +22,7 @@ export const FormField = styled.div`
         padding: 0 2px 0 10px;
         color: ${({theme}) => theme.grey9};
         filter: none;
-        
+
         &.inputError {
             border-color: #ef1a55;
         }
@@ -37,6 +37,10 @@ export const FormTextarea = styled.div`
 
     textarea {
         width: 100%;
+    }
+
+    .smsCount {
+        text-align: right;
     }
 `;
 
