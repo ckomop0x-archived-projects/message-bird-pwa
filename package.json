@@ -7,7 +7,7 @@
     "lint:write": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "start": "node ./dist/server/server.js",
     "prettier": "prettier --write src/**/*.{ts,tsx}",
-    "heroku-prebuild": "npm install --dev && npm buildclient && npm buildserver",
+    "heroku-prebuild": "npm install --dev && npm run buildclient && npm run buildserver",
     "buildserver": "tsc",
     "buildclient": "rm -rf dist/client && NODE_ENV='production' webpack -p",
     "startdev": "node_modules/.bin/webpack-dev-server",
