@@ -4,9 +4,9 @@ import {DashboardStyled} from '../Dashboard/styles';
 import {FormField, FormTextarea, SendButton, SendForm} from './styles';
 
 export interface SendState {
-    originator?: number;
-    recipient?: number;
-    message?: string;
+    originator: number;
+    recipient: number;
+    message: string;
 }
 
 export interface SendProps {
@@ -21,6 +21,12 @@ export default class Send extends React.PureComponent<SendProps, SendState> {
         this.onOriginatorChange = this.onOriginatorChange.bind(this);
         this.onRecipientChange = this.onRecipientChange.bind(this);
         this.onMessageChange = this.onMessageChange.bind(this);
+
+        this.state = {
+            originator: 0,
+            recipient: 0,
+            message: ''
+        }
     }
 
     private onRecipientChange(event: React.FormEvent<HTMLInputElement>): void {
@@ -28,7 +34,7 @@ export default class Send extends React.PureComponent<SendProps, SendState> {
         const {value} = element;
 
         this.setState({
-            recipient: Number(value) || undefined
+            recipient: Number(value) || 0
         });
     }
 
@@ -37,7 +43,7 @@ export default class Send extends React.PureComponent<SendProps, SendState> {
         const {value} = element;
 
         this.setState({
-            originator: Number(value) || undefined
+            originator: Number(value) || 0
         });
     }
 
