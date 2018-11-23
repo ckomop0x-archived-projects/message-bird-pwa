@@ -90,14 +90,8 @@
     "semicolon": false,
     "quotemark": false,
     "max-line-length": false,
-    "prefer-template": [
-      true,
-      "allow-single-concat"
-    ],
-    "object-literal-key-quotes": [
-      true,
-      "as-needed"
-    ],
+    "prefer-template": [true, "allow-single-concat"],
+    "object-literal-key-quotes": [true, "as-needed"],
     // ESLint rules with tslint-eslint-rules
     "trailing-comma": [
       true,
@@ -114,11 +108,7 @@
     "curly": true,
     "no-eval": true,
     "radix": true,
-    "indent": [
-      true,
-      "spaces",
-      4
-    ],
+    "indent": [true, "spaces", 4],
     // tslint-react
     "jsx-no-lambda": true,
     "jsx-no-string-ref": true,
