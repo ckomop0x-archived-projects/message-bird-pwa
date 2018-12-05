@@ -4,8 +4,9 @@ export interface LeftMenuProps {
     currency: string;
 }
 
-const CurrencySymbol = (props: LeftMenuProps) => {
+const CurrencySymbol = (props: LeftMenuProps): JSX.Element => {
     let currencySymbol: string;
+
     switch (props.currency) {
         case 'euros':
             currencySymbol = '\u20AC';

@@ -1,9 +1,10 @@
 import * as React from 'react';
 import {Route, Switch} from 'react-router';
+import {RightContainerProps} from '../RightContainer/index';
 import Dashboard from './Dashboard/index';
 import Send from './Send/index';
 
-const Sms = (props: any) => {
+const Sms = (props: RightContainerProps) => {
     return (
         <div>
             <Switch>

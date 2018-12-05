@@ -1,4 +1,5 @@
 export const themeStyles = {
+    primaryGrey: '#687992',
     grey1: '#2c3644',
     grey2: '#e5edf3',
     grey3: '#687992',
@@ -8,9 +9,16 @@ export const themeStyles = {
     grey7: '#d6e0f1',
     grey8: '#eaf0fa',
     grey9: '#4c5669',
-    primaryGrey: '#687992',
+    grey10: '#001234',
+
     primaryBlue: '#3f90dc',
+    blue1: '#2299DD',
+
+    white: '#ffffff',
+
+    primaryRed: '#ef1a55',
+
     halfGrid: 4,
-    grid: 8
-    // secondaryFont: '\'Exo 2\', sans-serif'
+    grid: 8,
+    secondaryFont: "'Lota', sans-serif"
 };

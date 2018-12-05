@@ -4,13 +4,24 @@ exports[`renders the heading 1`] = `
 <ThemeProvider
   theme={
     Object {
-      "gray1": "#353238",
-      "gray2": "#E0E0E0",
-      "gray3": "#EDF5FC",
+      "blue1": "#2299DD",
+      "grey1": "#2c3644",
+      "grey10": "#001234",
+      "grey2": "#e5edf3",
+      "grey3": "#687992",
+      "grey4": "#f6fafd",
+      "grey5": "#ebf5ff",
+      "grey6": "#ecf2fc",
+      "grey7": "#d6e0f1",
+      "grey8": "#eaf0fa",
+      "grey9": "#4c5669",
       "grid": 8,
-      "primaryRed": "#a50017",
-      "primaryRedLighten": "#7f1e1e",
-      "secondaryFont": "'Exo 2', sans-serif",
+      "halfGrid": 4,
+      "primaryBlue": "#3f90dc",
+      "primaryGrey": "#687992",
+      "primaryRed": "#ef1a55",
+      "secondaryFont": "'Lota', sans-serif",
+      "white": "#ffffff",
     }
   }
 >
@@ -23,9 +34,22 @@ exports[`renders the heading 1`] = `
     <GlobalStyleComponent
       suppressMultiMountWarning={false}
     />
-    <Header />
-    <Seasons />
-    <Footer />
+    <Switch>
+      <Route
+        exact={true}
+        path="/"
+        render={[Function]}
+      />
+      <Route
+        path="/sms"
+        render={[Function]}
+      />
+      <Redirect
+        from="*"
+        push={false}
+        to="/"
+      />
+    </Switch>
   </styled.div>
 </ThemeProvider>
 `;

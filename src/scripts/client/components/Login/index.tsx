@@ -1,5 +1,16 @@
 import * as React from 'react';
-import {BigLogo, LoginStyled} from './styles';
+import {
+    BigLogo,
+    Container,
+    LoginButton,
+    LoginStyled,
+    SignUpBox,
+    SignUpDescription,
+    SignupHeading,
+    SkewedBackground,
+    TextOnLine,
+    TextOnLineColumn
+} from './styles';
 
 interface LoginProps {
     error?: Error;
@@ -42,29 +53,26 @@ export default class Login extends React.PureComponent<LoginProps, LoginState> {
     render() {
         return (
             <LoginStyled>
-                <div className="skewed-background" />
+                <SkewedBackground />
                 <BigLogo title="Message Bird Application">
                     <img src={require('../../../../icons/big-logo.svg')} alt="Logo" />
                 </BigLogo>
-                <div className="sign-up-box">
-                    <section className="content col-md-12">
-                        <h1 className="signup-heading">Welcome back!</h1>
-                        <p className="signup-description">
+                <SignUpBox>
+                    <Container>
+                        <SignupHeading>Welcome back!</SignupHeading>
+                        <SignUpDescription>
                             No account yet? <a href="https://dashboard.messagebird.com/en/sign-up">Sign up for free</a>
-                        </p>
-                    </section>
-                    <div className="text-on-line-col">
-                        <span className="text-on-line">or</span>
-                    </div>
-                    <section className="form content padded-bottom ">
+                        </SignUpDescription>
+                    </Container>
+                    <TextOnLineColumn>
+                        <TextOnLine>or</TextOnLine>
+                    </TextOnLineColumn>
+                    <section>
                         <form onSubmit={this.onFormSubmit}>
-                            <div className="form-group field-loginform-password success">
-                                <label className="control-label" htmlFor="loginform-password">
-                                    Api Key
-                                </label>
+                            <div>
+                                <label htmlFor="loginform-password">Api Key</label>
                                 <input
                                     type="password"
-                                    className="form-control"
                                     name="apiKey"
                                     onChange={this.onChange}
                                     value={this.state.apiKey}
@@ -74,12 +82,12 @@ export default class Login extends React.PureComponent<LoginProps, LoginState> {
                                     aria-required="true"
                                     aria-invalid="false"
                                 />
-                                <input type="submit" className="login-button" value="Login" />
+                                <LoginButton type="submit" value="Login" />
                             </div>
                         </form>
                     </section>
                     {this.props.error && <div>Wrong API key</div>}
-                </div>
+                </SignUpBox>
             </LoginStyled>
         );
     }

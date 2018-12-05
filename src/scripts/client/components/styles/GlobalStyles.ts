@@ -28,7 +28,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     #nprogress .bar {
-      background: #29d;
+      background: #2299DD;
 
       position: fixed;
       z-index: 1031;
@@ -46,7 +46,7 @@ export const GlobalStyle = createGlobalStyle`
       right: 0px;
       width: 100px;
       height: 100%;
-      box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+      box-shadow: 0 0 10px #2299DD, 0 0 5px #2299DD;
       opacity: 1.0;
 
       -webkit-transform: rotate(3deg) translate(0px, -4px);
@@ -69,8 +69,8 @@ export const GlobalStyle = createGlobalStyle`
       box-sizing: border-box;
 
       border: solid 2px transparent;
-      border-top-color: #29d;
-      border-left-color: #29d;
+      border-top-color: #2299DD;
+      border-left-color: #2299DD;
       border-radius: 50%;
 
       -webkit-animation: nprogress-spinner 400ms linear infinite;

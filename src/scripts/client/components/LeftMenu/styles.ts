@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const LeftMenuStyled = styled.div`
-    background: #001234;
+    background: ${({theme}) => theme.grey10};
     width: ${({theme}) => theme.grid * 10}px;
     display: flex;
     flex-direction: column;
@@ -9,26 +9,15 @@ export const LeftMenuStyled = styled.div`
 
 export const Logo = styled.a`
     text-decoration: none;
-    line-height: 32px;
+    line-height: ${({theme}) => theme.grid * 4}px;
     vertical-align: top;
     display: inline-block;
-    margin-bottom: 45px;
-    padding: 21px 15px 15px;
+    margin-bottom: ${({theme}) => theme.grid * 5}px;
+    padding: ${({theme}) => theme.grid * 3}px ${({theme}) => theme.grid * 2}px ${({theme}) => theme.grid * 2}px;
     text-align: center;
 
     img {
         width: ${({theme}) => theme.grid * 4}px;
-        line-height: ${({theme}) => theme.grid * 4}px;
-        vertical-align: top;
-        display: inline-block;
-    }
-
-    span {
-        font-family: ${({theme}) => theme.secondaryFont};
-        color: #ffffff;
-        font-weight: bold;
-        padding-left: ${({theme}) => theme.grid * 2}px;
-        font-size: 1.75rem;
         line-height: ${({theme}) => theme.grid * 4}px;
         vertical-align: top;
         display: inline-block;
@@ -42,7 +31,7 @@ export const LeftMenuIcon = styled.div`
 
 export const LogOutButton = styled.button`
     background: none;
-    color: white;
+    color: ${({theme}) => theme.white};
     text-align: center;
     white-space: nowrap;
     border: 0;

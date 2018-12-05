@@ -8,10 +8,5 @@
         "prettier --write",
         "tslint",
         "git add"
-    ],
-    "test/{unit}/**/*.{ts,tsx}": [
-        "prettier --write",
-        "tslint",
-        "git add"
     ]
 }

@@ -24,42 +24,49 @@ export const FormField = styled.div`
         filter: none;
 
         &.inputError {
-            border-color: #ef1a55;
+            border-color: ${({theme}) => theme.primaryRed};
         }
     }
 `;
 
-export const FormTextarea = styled.div`
+export const FormTextBlock = styled.div`
     flex: 0 0 100%;
     max-width: 100%;
     padding-right: ${({theme}) => theme.grid * 2}px;
     padding-left: ${({theme}) => theme.grid * 2}px;
 
     textarea {
-        width: 100%;
     }
+`;
 
-    .smsCount {
-        text-align: right;
-    }
+export const TextArea = styled.textarea`
+    width: 100%;
+`;
+
+export const SmsCount = styled.div`
+    text-align: right;
 `;
 
 export const SendButton = styled.button`
     background: ${({theme}) => theme.primaryBlue};
-    color: #fff;
+    color: ${({theme}) => theme.white};
     border: 0;
     font-weight: 600;
-    height: 40px;
-    font-family: 'Lota', sans-serif;
-    font-size: 16px;
+    height: ${({theme}) => theme.grid * 5}px;
+    font-family: ${({theme}) => theme.secondaryFont};
+    font-size: 1rem;
     padding: ${({theme}) => theme.grid}px;
     text-decoration: none;
     float: right;
     border-radius: ${({theme}) => theme.halfGrid}px;
 
     i {
-        font-size: 20px;
+        font-size: 1.25rem;
         padding-right: ${({theme}) => theme.halfGrid}px;
-        color: #ffffff;
+        color: ${({theme}) => theme.white};
     }
+`;
+
+export const ErrorMessage = styled.span`
+    color: ${({theme}) => theme.primaryRed};
 `;

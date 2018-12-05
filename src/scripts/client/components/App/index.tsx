@@ -1,14 +1,14 @@
 import * as React from 'react';
-import styled, {ThemeProvider} from 'styled-components';
 import {Redirect, Switch} from 'react-router';
 import {Route, RouteComponentProps} from 'react-router-dom';
+import {ThemeProvider} from 'styled-components';
+import LeftMenu from '../LeftMenu';
 import Login from '../Login/index';
+import RightContainer from '../RightContainer';
 import {GlobalStyle} from '../styles/GlobalStyles';
 import {NormalizeStyles} from '../styles/NormalizeStyles';
 import {themeStyles} from '../styles/themeStyles';
-import {Container} from './styles';
-import LeftMenu from '../LeftMenu';
-import RightContainer from '../RightContainer';
+import {MainApp} from './styles';
 
 interface AppState {
     apiKey: string;
@@ -43,7 +43,7 @@ export default class App extends React.PureComponent<AppProps, AppState> {
         };
     }
 
-    onLogin() {
+    onLogin(): void {
         this.setState(
             {
                 isUserLogged: true
@@ -52,7 +52,7 @@ export default class App extends React.PureComponent<AppProps, AppState> {
         );
     }
 
-    onExit() {
+    onExit(): void {
         this.removeApiKey();
         this.setState(
             {
@@ -60,44 +60,45 @@ export default class App extends React.PureComponent<AppProps, AppState> {
             },
             this.props.history.push('/')
         );
-        console.log('onExit');
     }
 
-    initMessagebird(apiKey: string) {
-        const messagebird = require('messagebird')(apiKey);
+    initMessagebird(apiKey: string): void {
+        const messagebird: any = require('messagebird')(apiKey);
 
-        messagebird.balance.read((error: any, balanceResponse: BalanceResponse) => {
-            if (error) {
+        messagebird.balance.read(
+            (error: any, balanceResponse: BalanceResponse): void => {
+                if (error) {
+                    this.setState({
+                        error: error
+                    });
+                    return;
+                }
+                this.messagebird = messagebird;
                 this.setState({
-                    error: error
+                    balance: balanceResponse
                 });
-                return;
+                this.setApiKey(apiKey);
+                this.onLogin();
             }
-            this.messagebird = messagebird;
-            this.setState({
-                balance: balanceResponse
-            });
-            this.setApiKey(apiKey);
-            this.onLogin();
-        });
+        );
     }
 
-    setApiKey(apiKey: string) {
+    setApiKey(apiKey: string): void {
         localStorage.setItem('apiKey', apiKey);
         this.setState({
             apiKey
         });
     }
 
-    removeApiKey() {
+    removeApiKey(): void {
         localStorage.removeItem('apiKey');
         this.setState({
             apiKey: ''
         });
     }
 
-    init() {
-        const apiKey = localStorage.getItem('apiKey');
+    init(): void {
+        const apiKey: string | null = localStorage.getItem('apiKey');
 
         if (apiKey) {
             this.initMessagebird(apiKey);
@@ -105,7 +106,7 @@ export default class App extends React.PureComponent<AppProps, AppState> {
         }
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         this.init();
     }
 
@@ -114,7 +115,7 @@ export default class App extends React.PureComponent<AppProps, AppState> {
 
         return (
             <ThemeProvider theme={themeStyles}>
-                <Container id="main-app">
+                <MainApp id="main-app">
                     <NormalizeStyles />
                     <GlobalStyle />
                     <Switch>
@@ -149,7 +150,7 @@ export default class App extends React.PureComponent<AppProps, AppState> {
                         />
                         <Redirect from="*" to={isUserLogged ? '/sms' : '/'} />
                     </Switch>
-                </Container>
+                </MainApp>
             </ThemeProvider>
         );
     }

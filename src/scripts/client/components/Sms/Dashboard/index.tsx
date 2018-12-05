@@ -10,16 +10,19 @@ export interface DashboardState {
 }
 
 export interface DashboardProps {
+    apiKey: string;
     [key: string]: any;
 }
 
 export default class Dashboard extends React.Component<DashboardProps, DashboardState> {
+    _isMounted: boolean;
     update: any;
 
     constructor(props: DashboardProps) {
         super(props);
 
-        this.handleData = this.handleData.bind(this);
+        this.getMessages = this.getMessages.bind(this);
+        this._isMounted = false;
         this.state = {
             messages: []
         };
@@ -29,7 +32,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
         try {
             const response: any = await getMessages(apiKey);
 
-            if (this.state.messages !== response.data.items) {
+            if (this.state.messages !== response.data.items && this._isMounted === true) {
                 this.setState({
                     messages: response.data.items
                 });
@@ -37,11 +40,6 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
         } catch (err) {
             console.error(err);
         }
-    }
-
-    handleData(data: any) {
-        this.getMessages(this.props.apiKey);
-        console.log(data);
     }
 
     componentDidUpdate(prevProps: DashboardProps): void {
@@ -56,6 +54,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
         const {apiKey} = this.props;
 
         NProgress.done();
+        this._isMounted = true;
 
         if (apiKey) {
             this.getMessages(apiKey);
@@ -67,6 +66,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
     }
 
     componentWillUnmount() {
+        this._isMounted = false;
         clearInterval(this.update);
     }
 
@@ -90,7 +90,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
 
         return (
             <DashboardStyled>
-                <Websocket url="wss://message-bird.herokuapp.com" onMessage={this.handleData.bind(this)} />
+                <Websocket url="wss://message-bird.herokuapp.com" onMessage={this.getMessages(this.props.apiKey)} />
                 {messages !== [] ? (
                     <>
                         <div>Below you'll find an overview of the sent and received messages for the last 30 days.</div>
