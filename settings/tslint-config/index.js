@@ -4,7 +4,8 @@ module.exports = {
     'extends': [
         'tslint:latest',
         'tslint:recommended',
-        'tslint-react'
+        'tslint-react',
+        "tslint-config-prettier"
     ],
     'rulesDirectory': [
         path.resolve(process.cwd(), 'node_modules/tslint-import-rules/dist/rules')

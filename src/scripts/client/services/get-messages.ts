@@ -15,13 +15,15 @@ export interface Message {
     mclass: number;
     scheduledDatetime: null;
     createdDatetime: string;
-    recipients: {
-        totalCount: number;
-        totalSentCount: number;
-        totalDeliveredCount: number;
-        totalDeliveryFailedCount: number;
-        items: MessageRecipient[];
-    };
+    recipients: Recepients;
+}
+
+export interface Recepients {
+    totalCount: number;
+    totalSentCount: number;
+    totalDeliveredCount: number;
+    totalDeliveryFailedCount: number;
+    items: MessageRecipient[];
 }
 
 export interface MessageRecipient {

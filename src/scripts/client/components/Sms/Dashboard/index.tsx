@@ -1,9 +1,9 @@
 import * as React from 'react';
-import * as moment from 'moment';
 import * as NProgress from 'nprogress';
 const Websocket = require('react-websocket');
 import getMessages, {Message} from '../../../services/get-messages';
-import {DashboardStyled, MessagesTable} from './styles';
+import MessagesTable from './MessagesTable/index';
+import {DashboardStyled} from './styles';
 
 export interface DashboardState {
     messages: Message[];
@@ -38,7 +38,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
                 });
             }
         } catch (err) {
-            console.error(err);
+            console.error(err.name);
         }
     }
 
@@ -73,7 +73,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
     render() {
         let filteredMessages: Message[] = [];
         const {messages} = this.state;
-        const today: Date = new Date();
+
         if (messages !== []) {
             switch (this.props.filter) {
                 case 'inbox':
@@ -84,7 +84,6 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
                     break;
                 default:
                     filteredMessages = messages;
-                    break;
             }
         }
 
@@ -94,89 +93,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
                 {messages !== [] ? (
                     <>
                         <div>Below you'll find an overview of the sent and received messages for the last 30 days.</div>
-                        <MessagesTable>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Type</th>
-                                        <th>Recipient</th>
-                                        <th>Originator</th>
-                                        <th>Message</th>
-                                        <th>Status</th>
-                                        <th>Date</th>
-                                        <th>Read</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {filteredMessages &&
-                                        filteredMessages.map(
-                                            ({
-                                                id,
-                                                direction,
-                                                originator,
-                                                recipients,
-                                                body,
-                                                createdDatetime
-                                            }: Message) => {
-                                                const {totalCount, totalDeliveredCount, items} = recipients;
-                                                const isMultipleMessages: boolean = totalCount > 1;
-                                                const date: Date =
-                                                    direction === 'mo'
-                                                        ? new Date(createdDatetime.toString())
-                                                        : new Date(items[0].statusDatetime.toString());
-                                                const isToday: boolean = date.toDateString() === today.toDateString();
-                                                const singleMessageStatus: string = items[0].status;
-                                                const multipleMessagesStatus: string = (
-                                                    (totalDeliveredCount / totalCount) *
-                                                    100
-                                                )
-                                                    .toFixed(1)
-                                                    .toString();
-                                                const todayTime: string = moment(date).format('HH:mm');
-                                                const fullDate = moment(date).format('MM.DD.YY');
-
-                                                return (
-                                                    <tr key={id}>
-                                                        <td>
-                                                            {direction === 'mt' ? (
-                                                                <i
-                                                                    className="fa fa-arrow-right pull-right"
-                                                                    data-rel="tooltip"
-                                                                    title="Sent message"
-                                                                />
-                                                            ) : (
-                                                                <i
-                                                                    className="fa fa-arrow-left pull-left"
-                                                                    data-rel="tooltip"
-                                                                    title="Received message"
-                                                                />
-                                                            )}
-                                                        </td>
-                                                        <td>
-                                                            {isMultipleMessages
-                                                                ? `${totalCount} recipients`
-                                                                : items[0].recipient}
-                                                        </td>
-                                                        <td>{originator}</td>
-                                                        <td>{body}</td>
-                                                        <td>
-                                                            {isMultipleMessages
-                                                                ? `groups message ${multipleMessagesStatus}% delivered`
-                                                                : singleMessageStatus}
-                                                        </td>
-                                                        <td>{isToday ? todayTime : fullDate}</td>
-                                                        <td>
-                                                            <button>
-                                                                <i className="fa fa-file-text-o" />
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            }
-                                        )}
-                                </tbody>
-                            </table>
-                        </MessagesTable>
+                        <MessagesTable messages={filteredMessages} />
                     </>
                 ) : (
                     <div>No messages</div>
