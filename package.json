@@ -6,7 +6,6 @@
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "lint:write": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "lintcss": "stylelint 'src/**/*.ts'",
-    "prestart": "npm run buildserver",
     "start": "node ./dist/server/index.js",
     "prettier": "prettier --write src/**/*.{ts,tsx}",
     "heroku-prebuild": "npm install && npm run buildclient && npm run buildserver",
