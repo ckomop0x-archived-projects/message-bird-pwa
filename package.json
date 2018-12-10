@@ -9,7 +9,7 @@
     "prestart": "npm run buildserver",
     "start": "node ./dist/server/index.js",
     "prettier": "prettier --write src/**/*.{ts,tsx}",
-    "heroku-prebuild": "npm install --dev && npm run buildclient && npm run buildserver",
+    "heroku-prebuild": "npm install && npm run buildclient && npm run buildserver",
     "buildserver": "tsc",
     "buildclient": "rm -rf dist/client && NODE_ENV='production' webpack -p",
     "devserver": "nodemon",

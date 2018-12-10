@@ -1,4 +1,3 @@
-import WebHooksServer from './server';
 import * as bodyParser from 'body-parser';
 const cors = require('cors');
 const path = require('path');
@@ -7,6 +6,7 @@ const corsOptions = {
     optionsSuccessStatus: 200
 };
 const urlencodedParser = bodyParser.urlencoded({extended: false});
+import WebHooksServer from './server';
 
 const webHookServer = new WebHooksServer();
 const app = webHookServer.getApp();
