@@ -1,30 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var bodyParser = require("body-parser");
 var express = require("express");
 var http = require("http");
-var WebSocket = require("ws");
 var path = require('path');
+var cors = require('cors');
 var app = express();
+var server = http.createServer(app);
+var io = require('socket.io')(server, { origins: '*:*' });
+var corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200
+};
+io.set('origins', '*.*');
 app.use(express.static(path.join(__dirname, '../client')));
-app.get('*', function (_req, res) {
+app.use(cors());
+app.get('/', cors(corsOptions), function (_req, res) {
     res.sendFile(path.join(__dirname, '../client/index.html'));
 });
-var server = http.createServer(app);
-var wss = new WebSocket.Server({ server: server });
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
-wss.on('connection', function (ws) {
-    ws.on('message', function (message) {
-        console.log('received: %s', message);
+io.on('connection', function (socket) {
+    console.log('a user connected');
+    socket.on("disconnect", function () {
+        console.log("Client disconnected");
     });
-    ws.send('Hi there, I am a WebSocket server');
-});
-app.post('/', urlencodedParser, function (request, response) {
-    if (!request.body) {
-        return response.sendStatus(400);
-    }
-    wss.clients.forEach(function (client) {
-        client.send("new message");
+    socket.on("message", function (message) {
+        console.log("Client message", message);
     });
 });
 server.listen(process.env.PORT || 8999, function () {

@@ -1,5 +1,6 @@
 import * as NProgress from 'nprogress';
 import * as React from 'react';
+import * as socketIOClient from 'socket.io-client';
 import getMessages, {Message} from '../../../services/get-messages';
 import MessagesTable from './MessagesTable/index';
 import {DashboardStyled} from './styles';
@@ -8,6 +9,8 @@ const Websocket = require('react-websocket');
 
 export interface DashboardState {
     messages: Message[];
+    response: boolean;
+    endpoint: string;
 }
 
 export interface DashboardProps {
@@ -24,7 +27,9 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
         this.getMessages = this.getMessages.bind(this);
         this._isMounted = false;
         this.state = {
-            messages: []
+            messages: [],
+            response: false,
+            endpoint: 'http://localhost:8999'
         };
     }
 
@@ -55,6 +60,8 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
 
     componentDidMount() {
         const {apiKey} = this.props;
+        const {endpoint} = this.state;
+        const socket = socketIOClient(endpoint);
 
         NProgress.done();
         this._isMounted = true;
@@ -62,6 +69,8 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
         if (apiKey) {
             this.getMessages(apiKey);
         }
+
+        socket.on('FromAPI', (data: any) => this.setState({response: data}));
     }
 
     componentWillMount() {
@@ -70,7 +79,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
 
     render() {
         let filteredMessages: Message[] = [];
-        const {messages} = this.state;
+        const {messages, response} = this.state;
 
         if (messages !== []) {
             switch (this.props.filter) {
@@ -88,6 +97,9 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
         return (
             <DashboardStyled>
                 {/*<Websocket url="wss://message-bird.herokuapp.com" onMessage={this.getMessages(this.props.apiKey)} />*/}
+                <div style={{textAlign: 'center'}}>
+                    {response ? <p>The temperature in Florence is: {response} °F</p> : <p>Loading...</p>}
+                </div>
                 {messages !== [] ? (
                     <>
                         <div>Below you'll find an overview of the sent and received messages for the last 30 days.</div>
