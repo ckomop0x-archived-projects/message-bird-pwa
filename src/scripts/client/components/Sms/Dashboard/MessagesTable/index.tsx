@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Message} from '../../../../services/get-messages';
+import {Message} from '../../../../../services/get-messages';
 import {MessagesTableStyled} from './styles';
 import MessageItem from './MessageItem';
 

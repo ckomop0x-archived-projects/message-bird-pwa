@@ -1,32 +1,40 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var http_1 = require("http");
 var express = require("express");
-var http = require("http");
-var path = require('path');
-var cors = require('cors');
-var app = express();
-var server = http.createServer(app);
-var io = require('socket.io')(server, { origins: '*:*' });
-var corsOptions = {
-    origin: '*',
-    optionsSuccessStatus: 200
-};
-io.set('origins', '*.*');
-app.use(express.static(path.join(__dirname, '../client')));
-app.use(cors());
-app.get('/', cors(corsOptions), function (_req, res) {
-    res.sendFile(path.join(__dirname, '../client/index.html'));
-});
-io.on('connection', function (socket) {
-    console.log('a user connected');
-    socket.on("disconnect", function () {
-        console.log("Client disconnected");
-    });
-    socket.on("message", function (message) {
-        console.log("Client message", message);
-    });
-});
-server.listen(process.env.PORT || 8999, function () {
-    console.log("Server started on port " + server.address().port + " :)");
-});
+var socketIo = require("socket.io");
+var WebHooksServer = (function () {
+    function WebHooksServer() {
+        this.app = express();
+        this.port = process.env.PORT || 8999;
+        this.server = http_1.createServer(this.app);
+        this.io = socketIo(this.server);
+        this.listen();
+        this.sendMessage = this.sendMessage.bind(this);
+    }
+    WebHooksServer.prototype.listen = function () {
+        var _this = this;
+        this.server.listen(this.port, function () {
+            console.log('Running server on port %s', _this.port);
+        });
+        this.io.on('connect', function (socket) {
+            console.log('Connected client on port %s.', _this.port);
+            socket.on('message', function (m) {
+                console.log('[server](message): %s', JSON.stringify(m));
+                _this.io.emit('message', m);
+            });
+            socket.on('disconnect', function () {
+                console.log('Client disconnected');
+            });
+        });
+    };
+    WebHooksServer.prototype.sendMessage = function (message) {
+        this.io.emit('message', message);
+    };
+    WebHooksServer.prototype.getApp = function () {
+        return this.app;
+    };
+    return WebHooksServer;
+}());
+exports.default = WebHooksServer;
 //# sourceMappingURL=server.js.map

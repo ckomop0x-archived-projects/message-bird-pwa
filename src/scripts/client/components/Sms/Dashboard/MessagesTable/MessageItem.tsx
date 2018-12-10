@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import * as React from 'react';
-import {Recepients} from '../../../../services/get-messages';
+import {Recepients} from '../../../../../services/get-messages';
 
 export interface MessageItemProps {
     recipients: Recepients;

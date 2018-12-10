@@ -1,60 +1,41 @@
-import * as bodyParser from 'body-parser';
+import {createServer, Server} from 'http';
 import * as express from 'express';
-import * as http from 'http';
-import * as WebSocket from 'ws';
-const path = require('path');
-const cors = require('cors');
-const app = express();
-const server = http.createServer(app);
-const io = require('socket.io')(server, {origins: '*:*'});
-const corsOptions = {
-    origin: '*',
-    optionsSuccessStatus: 200
-};
-io.set('origins', '*.*');
+import * as socketIo from 'socket.io';
 
-app.use(express.static(path.join(__dirname, '../client')));
-app.use(cors());
-app.get('/', cors(corsOptions), (_req, res) => {
-    res.sendFile(path.join(__dirname, '../client/index.html'));
-});
+export default class WebHooksServer {
+    private app: express.Application = express();
+    private port: string | number = process.env.PORT || 8999;
+    private server: Server = createServer(this.app);
+    private io: SocketIO.Server = socketIo(this.server);
 
-// const server = http.createServer(app);
-// const wss = new WebSocket.Server({server});
-// const urlencodedParser = bodyParser.urlencoded({extended: false});
+    constructor() {
+        this.listen();
+        this.sendMessage = this.sendMessage.bind(this);
+    }
 
-io.on('connection', (socket: any) => {
-    console.log('a user connected');
+    private listen(): void {
+        this.server.listen(this.port, () => {
+            console.log('Running server on port %s', this.port);
+        });
 
-    socket.on('disconnect', () => {
-        console.log('Client disconnected');
-    });
+        this.io.on('connect', (socket: any) => {
+            console.log('Connected client on port %s.', this.port);
+            socket.on('message', (m: any) => {
+                console.log('[server](message): %s', JSON.stringify(m));
+                this.io.emit('message', m);
+            });
 
-    socket.on('message', (message: any) => {
-        console.log('Client message', message);
-    });
-});
+            socket.on('disconnect', () => {
+                console.log('Client disconnected');
+            });
+        });
+    }
 
-// wss.on('connection', (ws: WebSocket) => {
-//     ws.on('message', (message: string) => {
-//         console.log('received: %s', message);
-//     });
-//
-//     // send immediatly a feedback to the incoming connection
-//     ws.send('Hi there, I am a WebSocket server');
-// });
+    sendMessage(message: any): void {
+        this.io.emit('message', message);
+    }
 
-// app.post('/', urlencodedParser, (request, response) => {
-//     if (!request.body) {
-//         return response.sendStatus(400);
-//     }
-// wss.clients.forEach((client) => {
-//     client.send(`new message`);
-// });
-// });
-
-// start our server
-server.listen(process.env.PORT || 8999, () => {
-    // @ts-ignore
-    console.log(`Server started on port ${server.address().port} :)`);
-});
+    getApp(): express.Application {
+        return this.app;
+    }
+}

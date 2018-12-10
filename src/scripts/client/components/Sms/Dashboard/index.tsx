@@ -1,16 +1,13 @@
 import * as NProgress from 'nprogress';
 import * as React from 'react';
 import * as socketIOClient from 'socket.io-client';
-import getMessages, {Message} from '../../../services/get-messages';
+import getMessages, {Message} from '../../../../services/get-messages';
 import MessagesTable from './MessagesTable/index';
 import {DashboardStyled} from './styles';
-
-const Websocket = require('react-websocket');
 
 export interface DashboardState {
     messages: Message[];
     response: boolean;
-    endpoint: string;
 }
 
 export interface DashboardProps {
@@ -20,16 +17,16 @@ export interface DashboardProps {
 
 export default class Dashboard extends React.Component<DashboardProps, DashboardState> {
     _isMounted: boolean;
+    socket: SocketIOClient.Socket;
 
     constructor(props: DashboardProps) {
         super(props);
-
+        this.socket = socketIOClient('http://localhost:8999');
         this.getMessages = this.getMessages.bind(this);
         this._isMounted = false;
         this.state = {
             messages: [],
-            response: false,
-            endpoint: 'http://localhost:8999'
+            response: false
         };
     }
 
@@ -60,8 +57,6 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
 
     componentDidMount() {
         const {apiKey} = this.props;
-        const {endpoint} = this.state;
-        const socket = socketIOClient(endpoint);
 
         NProgress.done();
         this._isMounted = true;
@@ -70,7 +65,15 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
             this.getMessages(apiKey);
         }
 
-        socket.on('FromAPI', (data: any) => this.setState({response: data}));
+        this.socket.on('message', (data: any) => {
+            console.log(data);
+
+            return this.getMessages(apiKey);
+        });
+    }
+
+    componentWillUnmount(): void {
+        this.socket.disconnect();
     }
 
     componentWillMount() {
@@ -96,7 +99,6 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
 
         return (
             <DashboardStyled>
-                {/*<Websocket url="wss://message-bird.herokuapp.com" onMessage={this.getMessages(this.props.apiKey)} />*/}
                 <div style={{textAlign: 'center'}}>
                     {response ? <p>The temperature in Florence is: {response} °F</p> : <p>Loading...</p>}
                 </div>
