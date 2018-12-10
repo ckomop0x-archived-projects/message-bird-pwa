@@ -1,4 +1,5 @@
 import * as bodyParser from 'body-parser';
+import * as express from 'express';
 const cors = require('cors');
 const path = require('path');
 const corsOptions = {
@@ -20,6 +21,7 @@ app.post('/webhook', urlencodedParser, (request, response) => {
     return response.sendStatus(200);
 });
 
+app.use(express.static(path.join(__dirname, '../client')));
 app.get('/', cors(corsOptions), (_req, res) => {
     res.sendFile(path.join(__dirname, '../client/index.html'));
 });

@@ -21,7 +21,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
 
     constructor(props: DashboardProps) {
         super(props);
-        this.socket = socketIOClient('http://localhost:8999');
+        this.socket = socketIOClient('https://message-bird.herokuapp.com:8999');
         this.getMessages = this.getMessages.bind(this);
         this._isMounted = false;
         this.state = {
