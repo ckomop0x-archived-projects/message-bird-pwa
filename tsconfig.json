@@ -21,7 +21,7 @@
     ]
   },
   "include": [
-    "./src/scripts/server/server.ts",
+    "./src/scripts/server/index.ts",
     "./src/scripts/client/index.tsx"
   ],
   "exclude": [
