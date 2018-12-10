@@ -4,7 +4,7 @@ import * as socketIo from 'socket.io';
 
 export default class WebHooksServer {
     private app: express.Application = express();
-    private port: number = 8999;
+    private port: string | number = process.env.PORT || 8999;
     private server: Server = createServer(this.app);
     private io: SocketIO.Server = socketIo(this.server);
 
