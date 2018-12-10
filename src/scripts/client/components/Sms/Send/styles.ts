@@ -34,9 +34,6 @@ export const FormTextBlock = styled.div`
     max-width: 100%;
     padding-right: ${({theme}) => theme.grid * 2}px;
     padding-left: ${({theme}) => theme.grid * 2}px;
-
-    textarea {
-    }
 `;
 
 export const TextArea = styled.textarea`

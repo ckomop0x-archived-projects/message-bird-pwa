@@ -1,9 +1,10 @@
-import * as React from 'react';
 import * as NProgress from 'nprogress';
-const Websocket = require('react-websocket');
+import * as React from 'react';
 import getMessages, {Message} from '../../../services/get-messages';
 import MessagesTable from './MessagesTable/index';
 import {DashboardStyled} from './styles';
+
+const Websocket = require('react-websocket');
 
 export interface DashboardState {
     messages: Message[];
@@ -16,7 +17,6 @@ export interface DashboardProps {
 
 export default class Dashboard extends React.Component<DashboardProps, DashboardState> {
     _isMounted: boolean;
-    update: any;
 
     constructor(props: DashboardProps) {
         super(props);
@@ -32,7 +32,10 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
         try {
             const response: any = await getMessages(apiKey);
 
-            if (this.state.messages !== response.data.items && this._isMounted === true) {
+            if (!this._isMounted) {
+                return;
+            }
+            if (this.state.messages !== response.data.items) {
                 this.setState({
                     messages: response.data.items
                 });
@@ -65,11 +68,6 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
         NProgress.start();
     }
 
-    componentWillUnmount() {
-        this._isMounted = false;
-        clearInterval(this.update);
-    }
-
     render() {
         let filteredMessages: Message[] = [];
         const {messages} = this.state;
@@ -89,7 +87,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
 
         return (
             <DashboardStyled>
-                <Websocket url="wss://message-bird.herokuapp.com" onMessage={this.getMessages(this.props.apiKey)} />
+                {/*<Websocket url="wss://message-bird.herokuapp.com" onMessage={this.getMessages(this.props.apiKey)} />*/}
                 {messages !== [] ? (
                     <>
                         <div>Below you'll find an overview of the sent and received messages for the last 30 days.</div>

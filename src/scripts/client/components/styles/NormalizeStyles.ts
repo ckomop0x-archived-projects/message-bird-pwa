@@ -57,7 +57,7 @@ export const NormalizeStyles = createGlobalStyle`
      */
 
     pre {
-      font-family: monospace, monospace; /* 1 */
+      font-family: monospace; /* 1 */
       font-size: 1em; /* 2 */
     }
 
@@ -100,7 +100,7 @@ export const NormalizeStyles = createGlobalStyle`
     code,
     kbd,
     samp {
-      font-family: monospace, monospace; /* 1 */
+      font-family: monospace; /* 1 */
       font-size: 1em; /* 2 */
     }
 

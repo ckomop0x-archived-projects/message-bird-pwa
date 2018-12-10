@@ -48,10 +48,7 @@ export const GlobalStyle = createGlobalStyle`
       height: 100%;
       box-shadow: 0 0 10px #2299DD, 0 0 5px #2299DD;
       opacity: 1.0;
-
-      -webkit-transform: rotate(3deg) translate(0px, -4px);
-          -ms-transform: rotate(3deg) translate(0px, -4px);
-              transform: rotate(3deg) translate(0px, -4px);
+      transform: rotate(3deg) translate(0px, -4px);
     }
 
     /* Remove these to get rid of the spinner */
@@ -72,9 +69,7 @@ export const GlobalStyle = createGlobalStyle`
       border-top-color: #2299DD;
       border-left-color: #2299DD;
       border-radius: 50%;
-
-      -webkit-animation: nprogress-spinner 400ms linear infinite;
-              animation: nprogress-spinner 400ms linear infinite;
+      animation: nprogress-spinner 400ms linear infinite;
     }
 
     .nprogress-custom-parent {
@@ -86,11 +81,7 @@ export const GlobalStyle = createGlobalStyle`
     .nprogress-custom-parent #nprogress .bar {
       position: absolute;
     }
-
-    @-webkit-keyframes nprogress-spinner {
-      0%   { -webkit-transform: rotate(0deg); }
-      100% { -webkit-transform: rotate(360deg); }
-    }
+    
     @keyframes nprogress-spinner {
       0%   { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
