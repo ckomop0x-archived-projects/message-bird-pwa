@@ -4,6 +4,7 @@ import * as socketIOClient from 'socket.io-client';
 import getMessages, {Message} from '../../../../services/get-messages';
 import MessagesTable from './MessagesTable/index';
 import {DashboardStyled} from './styles';
+import ConnectOpts = SocketIOClient.ConnectOpts;
 
 export interface DashboardState {
     messages: Message[];
@@ -20,8 +21,10 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
     socket: SocketIOClient.Socket;
 
     constructor(props: DashboardProps) {
+        console.log('process.env.WEBHOOK_URL ==>', process.env.WEBHOOK_URL);
+
         super(props);
-        this.socket = socketIOClient(`https://message-bird.herokuapp.com`);
+        this.socket = socketIOClient({host: process.env.WEBHOOK_URL});
         this.getMessages = this.getMessages.bind(this);
         this._isMounted = false;
         this.state = {

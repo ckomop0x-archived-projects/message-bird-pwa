@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
@@ -43,6 +44,10 @@ const webpackPlugins = [
                 autoprefixer()
             ]
         }
+    }),
+    new Dotenv({
+        path: './.env', // load this now instead of the ones in '.env'
+        safe: false, // load '.env.example' to verify the '.env' variables are all set. Can also be a string to a different file.
     })
 ];
 
