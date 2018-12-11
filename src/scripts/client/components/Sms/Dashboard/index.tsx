@@ -80,7 +80,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
 
     render() {
         let filteredMessages: Message[] = [];
-        const {messages, response} = this.state;
+        const {messages} = this.state;
 
         if (messages !== []) {
             switch (this.props.filter) {
@@ -97,9 +97,6 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
 
         return (
             <DashboardStyled>
-                <div style={{textAlign: 'center'}}>
-                    {response ? <p>The temperature in Florence is: {response} °F</p> : <p>Loading...</p>}
-                </div>
                 {messages !== [] ? (
                     <>
                         <div>Below you'll find an overview of the sent and received messages for the last 30 days.</div>
