@@ -10,7 +10,7 @@ https://message-bird.herokuapp.com
 2. TypeScript
 3. Styled-components
 4. NodeJS (Express) 
-5. Websockets
+5. WebSockets(Socket.io)
 6. Webpack
 7. Jest, Enzyme
 8. Prettier and TSLint for code checking and formatting
@@ -19,7 +19,7 @@ https://message-bird.herokuapp.com
 This application allows a user to fill in a phone number and a message, 
 send the message to Message Bird API, receive messages via a webhook.
  
-This is done with POST API and Websockets. When the server obtains
+This is done with POST API and WebSockets(Socket.io). When the server obtains
 POST request from Message Bird API it sends through WebSockets a broadcast to the connected client and after this, it refreshes SMS list from the Message Bird. 
 
 To use the service you need to register and obtain a new key on the:
@@ -29,7 +29,7 @@ If you want to have the possibility to update messages in real-time you
 need to set webhooks on the 
 https://dashboard.messagebird.com/en/flow-builder
 and forward messages to application 
-https://message-bird.herokuapp.com (POST request).
+https://message-bird.herokuapp.com/webhook (POST request).
 
 ## TODO: 
 1. The posibility to check the sign of the message recieved via webhook.  
