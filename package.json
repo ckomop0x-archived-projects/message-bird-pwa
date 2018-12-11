@@ -14,7 +14,7 @@
     "lint:write": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "lintcss": "stylelint 'src/**/*.ts'",
     "lock": "npm shrinkwrap --no-optional",
-    "prettier": "prettier --write src/**/*.{ts,tsx}",
+    "prettier": "prettier --write 'src/**/*.{ts,tsx,json}'",
     "start": "node ./dist/server/index.js",
     "startdev": "node_modules/.bin/webpack-dev-server",
     "test": "npm run lint && npm run lintcss && npx jest --no-cache --no-watchman",
