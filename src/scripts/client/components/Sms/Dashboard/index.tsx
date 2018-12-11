@@ -21,7 +21,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
 
     constructor(props: DashboardProps) {
         super(props);
-        this.socket = socketIOClient(`https://message-bird.herokuapp.com:${process.env.PORT}`);
+        this.socket = socketIOClient(`https://message-bird.herokuapp.com`);
         this.getMessages = this.getMessages.bind(this);
         this._isMounted = false;
         this.state = {
@@ -56,19 +56,17 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
     }
 
     componentDidMount() {
-        const {apiKey} = this.props;
-
         NProgress.done();
         this._isMounted = true;
 
-        if (apiKey) {
-            this.getMessages(apiKey);
+        if (this.props.apiKey) {
+            this.getMessages(this.props.apiKey);
         }
 
         this.socket.on('message', (data: any) => {
             console.log(data);
 
-            return this.getMessages(apiKey);
+            return this.getMessages(this.props.apiKey);
         });
     }
 
