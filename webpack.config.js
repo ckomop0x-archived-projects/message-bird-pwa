@@ -53,6 +53,15 @@ const webpackPlugins = [
 
 module.exports = {
     mode: PRODUCTION ? 'production' : 'development',
+    entry: {
+        index: PRODUCTION ? ['./src/scripts/client/index.tsx'] : ['./src/scripts/client/index.tsx', 'webpack-hot-middleware/client'],
+        vendor: ['react', 'react-dom']
+    },
+    output: {
+        path: path.resolve(__dirname, 'dist/client'),
+        filename: PRODUCTION ? 'js/[name].[hash].bundle.js' : 'js/[name].bundle.js',
+        chunkFilename: PRODUCTION ? 'js/[name].[hash].bundle.js' : 'js/[name].bundle.js',
+    },
     optimization: PRODUCTION ? {
         minimizer: [
             new UglifyJsPlugin({
@@ -61,16 +70,11 @@ module.exports = {
                 sourceMap: true
             }),
             new OptimizeCSSAssetsPlugin({})
-        ]
+        ],
+        splitChunks: {
+            chunks: 'all'
+        }
     } : {},
-    entry: {
-        index: PRODUCTION ? ['./src/scripts/client/index.tsx'] : ['./src/scripts/client/index.tsx', 'webpack-hot-middleware/client'],
-        vendor: ['react', 'react-dom']
-    },
-    output: {
-        path: path.resolve(__dirname, 'dist/client'),
-        filename: PRODUCTION ? 'js/[name].[hash].bundle.js' : 'js/[name].bundle.js'
-    },
     devtool: 'source-map',
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']

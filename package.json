@@ -2,6 +2,7 @@
   "name": "message-bird-app",
   "version": "1.1.0",
   "description": "Message Bird Application",
+  "private": true,
   "scripts": {
     "buildserver": "tsc",
     "buildclient": "rm -rf dist/client && NODE_ENV='production' webpack -p",
@@ -16,13 +17,15 @@
     "prettier": "prettier --write src/**/*.{ts,tsx}",
     "start": "node ./dist/server/index.js",
     "startdev": "node_modules/.bin/webpack-dev-server",
-    "test": "npm run lint && npm run lintcss && ./node_modules/.bin/jest --no-cache --no-watchman",
-    "test:watch": "./node_modules/.bin/jest --watch",
-    "test:coverage": "jest --coverage"
+    "test": "npm run lint && npm run lintcss && npx jest --no-cache --no-watchman",
+    "test:watch": "npx jest --watch",
+    "test:coverage": "npx jest --coverage"
   },
   "author": "paul.klochkov@gmail.com",
   "license": "ISC",
   "dependencies": {
+    "@loadable/component": "^5.2.1",
+    "@types/react-loadable": "^5.4.2",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
@@ -37,6 +40,7 @@
     "nprogress": "^0.2.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-loadable": "^5.5.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-websocket": "^2.0.0",
