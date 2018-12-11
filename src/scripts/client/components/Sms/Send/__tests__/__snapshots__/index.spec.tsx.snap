@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the heading 1`] = `
+<styled.div>
+  <styled.form
+    onSubmit={[Function]}
+  >
+    <styled.div>
+      <input
+        className=""
+        name="Recipient"
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="Recipient"
+        type="number"
+        value=""
+      />
+      <styled.span />
+    </styled.div>
+    <styled.div>
+      <input
+        className=""
+        name="Originator"
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="Originator"
+        type="number"
+        value=""
+      />
+      <styled.span />
+    </styled.div>
+    <styled.div>
+      <styled.textarea
+        cols={30}
+        name="Message"
+        onChange={[Function]}
+        placeholder="Message"
+        rows={10}
+        value=""
+      />
+      <styled.div>
+        0
+        /
+        1377
+        ,
+         
+         0
+         
+        SMS
+      </styled.div>
+      <styled.span />
+    </styled.div>
+    <styled.button
+      type="submit"
+    >
+      <i
+        className="fa fa-comment"
+      />
+      Send SMS
+    </styled.button>
+  </styled.form>
+</styled.div>
+`;

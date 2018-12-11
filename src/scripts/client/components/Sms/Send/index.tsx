@@ -4,12 +4,6 @@ import {RightContainerProps} from '../../RightContainer/index';
 import {DashboardStyled} from '../Dashboard/styles';
 import {ErrorMessage, FormField, FormTextBlock, SendButton, SendForm, SmsCount, TextArea} from './styles';
 
-export enum Messages {
-    SHORT_NUMBER = "Ah, that's a bit too short for a phone number.",
-    CANT_BE_BLANK = 'Cannot be Blank!',
-    SEND_SMS = 'Send SMS'
-}
-
 export interface SendState {
     originator: number;
     recipient: number;
@@ -19,7 +13,21 @@ export interface SendState {
     messageError?: string;
 }
 
+export enum fieldType {
+    RECIPIENT = 'Recipient',
+    ORIGINATOR = 'Originator',
+    MESSAGE = 'Message'
+}
+
 export default class Send extends React.PureComponent<RightContainerProps, SendState> {
+    SHORT_NUMBER: string = "Ah, that's a bit too short for a phone number.";
+    CANT_BE_BLANK: string = 'cannot be Blank!';
+    RECIPIENT_EMPTY: string = `Recipient ${this.CANT_BE_BLANK}`;
+    ORIGINATOR_EMPTY: string = `Originator ${this.CANT_BE_BLANK}`;
+    MESSAGE_EMPTY: string = `Message ${this.CANT_BE_BLANK}`;
+    SEND_SMS: string = 'Send SMS';
+    SMS: string = 'SMS';
+
     constructor(props: RightContainerProps) {
         super(props);
 
@@ -51,18 +59,18 @@ export default class Send extends React.PureComponent<RightContainerProps, SendS
         const {value, name} = element;
 
         switch (name) {
-            case 'recipient':
+            case fieldType.RECIPIENT:
                 if (!value) {
-                    this.setState({recipientError: `Recipient ${Messages.CANT_BE_BLANK}`});
+                    this.setState({recipientError: this.RECIPIENT_EMPTY});
                 } else if (value.toString().length < 8) {
-                    this.setState({recipientError: Messages.SHORT_NUMBER});
+                    this.setState({recipientError: this.SHORT_NUMBER});
                 }
                 break;
-            case 'originator':
+            case fieldType.ORIGINATOR:
                 if (!value) {
-                    this.setState({originatorError: `Originator ${Messages.CANT_BE_BLANK}`});
+                    this.setState({originatorError: this.ORIGINATOR_EMPTY});
                 } else if (value.toString().length < 8) {
-                    this.setState({originatorError: Messages.SHORT_NUMBER});
+                    this.setState({originatorError: this.SHORT_NUMBER});
                 }
                 break;
             default:
@@ -92,24 +100,24 @@ export default class Send extends React.PureComponent<RightContainerProps, SendS
         event.preventDefault();
 
         if (!this.state.originator) {
-            this.setState({originatorError: `Originator ${Messages.CANT_BE_BLANK}`});
+            this.setState({originatorError: this.ORIGINATOR_EMPTY});
             return;
         }
 
         if (this.state.recipient.toString().length < 8) {
             this.setState({
-                recipientError: Messages.SHORT_NUMBER
+                recipientError: this.SHORT_NUMBER
             });
             return;
         }
 
         if (!this.state.recipient) {
-            this.setState({recipientError: `Recipient ${Messages.CANT_BE_BLANK}`});
+            this.setState({recipientError: this.RECIPIENT_EMPTY});
             return;
         }
 
         if (!this.state.message) {
-            this.setState({messageError: `Message ${Messages.CANT_BE_BLANK}`});
+            this.setState({messageError: this.MESSAGE_EMPTY});
             return;
         }
 
@@ -151,11 +159,11 @@ export default class Send extends React.PureComponent<RightContainerProps, SendS
                         <input
                             type="number"
                             className={this.state.recipientError ? 'inputError' : ''}
-                            name="recipient"
+                            name={fieldType.RECIPIENT}
                             value={this.state.recipient || ''}
                             defaultValue={undefined}
                             onBlur={this.handleBlur}
-                            placeholder="Recipient"
+                            placeholder={fieldType.RECIPIENT}
                             onChange={this.onRecipientFiledChange}
                         />
                         <ErrorMessage>{this.state.recipientError}</ErrorMessage>
@@ -163,8 +171,9 @@ export default class Send extends React.PureComponent<RightContainerProps, SendS
                     <FormField>
                         <input
                             type="number"
-                            name="originator"
-                            placeholder="Originator"
+                            className={this.state.recipientError ? 'inputError' : ''}
+                            name={fieldType.ORIGINATOR}
+                            placeholder={fieldType.ORIGINATOR}
                             onBlur={this.handleBlur}
                             value={this.state.originator || ''}
                             defaultValue={undefined}
@@ -174,8 +183,8 @@ export default class Send extends React.PureComponent<RightContainerProps, SendS
                     </FormField>
                     <FormTextBlock>
                         <TextArea
-                            name="message"
-                            placeholder="Message"
+                            name={fieldType.MESSAGE}
+                            placeholder={fieldType.MESSAGE}
                             cols={30}
                             rows={10}
                             value={this.state.message || ''}
@@ -184,13 +193,13 @@ export default class Send extends React.PureComponent<RightContainerProps, SendS
                         <SmsCount>
                             {this.state.message.length}/{maxMessageLenght},{' '}
                             {this.state.message.length === 0 ? ' 0' : Math.floor(this.state.message.length / 160 + 1)}{' '}
-                            SMS
+                            {this.SMS}
                         </SmsCount>
                         <ErrorMessage>{this.state.messageError}</ErrorMessage>
                     </FormTextBlock>
                     <SendButton type="submit">
                         <i className="fa fa-comment" />
-                        {Messages.SEND_SMS}
+                        {this.SEND_SMS}
                     </SendButton>
                 </SendForm>
             </DashboardStyled>
