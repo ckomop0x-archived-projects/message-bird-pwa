@@ -1,5 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`renders the App 1`] = `
+<ThemeProvider
+  theme={
+    Object {
+      "blue1": "#2299DD",
+      "grey1": "#2c3644",
+      "grey10": "#001234",
+      "grey2": "#e5edf3",
+      "grey3": "#687992",
+      "grey4": "#f6fafd",
+      "grey5": "#ebf5ff",
+      "grey6": "#ecf2fc",
+      "grey7": "#d6e0f1",
+      "grey8": "#eaf0fa",
+      "grey9": "#4c5669",
+      "grid": 8,
+      "halfGrid": 4,
+      "primaryBlue": "#3f90dc",
+      "primaryGrey": "#687992",
+      "primaryRed": "#ef1a55",
+      "secondaryFont": "'Lota', sans-serif",
+      "white": "#ffffff",
+    }
+  }
+>
+  <styled.div
+    id="main-app"
+  >
+    <GlobalStyleComponent
+      suppressMultiMountWarning={false}
+    />
+    <GlobalStyleComponent
+      suppressMultiMountWarning={false}
+    />
+    <Switch>
+      <Route
+        exact={true}
+        path="/"
+        render={[Function]}
+      />
+      <Route
+        path="/sms"
+        render={[Function]}
+      />
+      <Redirect
+        from="*"
+        push={false}
+        to="/"
+      />
+    </Switch>
+  </styled.div>
+</ThemeProvider>
+`;
+
 exports[`renders the heading 1`] = `
 <ThemeProvider
   theme={

@@ -6,6 +6,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const appSettings = require('./settings/app-settings');
+const workboxPlugin = require('workbox-webpack-plugin');
 const loaders = [
     'style-loader',
     {
@@ -43,6 +44,10 @@ const webpackPlugins = [
                 autoprefixer()
             ]
         }
+    }),
+    new workboxPlugin.InjectManifest({
+        swSrc: './src/scripts/sw.js',
+        swDest: 'service-worker.js'
     })
 ];
 

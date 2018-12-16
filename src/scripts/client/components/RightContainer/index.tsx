@@ -10,6 +10,7 @@ export interface RightContainerProps {
     apiKey: string;
     balance?: BalanceResponse;
     messagebird: any;
+    isOffline: boolean;
 }
 
 const RightContainer = (props: RightContainerProps) => {

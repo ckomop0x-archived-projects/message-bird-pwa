@@ -1,6 +1,6 @@
 # Message Bird
 
-Small application that allows to work with Message Bird SMS service.   
+Small application that allows to work with Message Bird SMS service. With ServiceWorker application also works offline (you can see cached messages). 
   
 Try online:  
 https://message-bird.herokuapp.com
@@ -12,8 +12,9 @@ https://message-bird.herokuapp.com
 4. NodeJS (Express) 
 5. Websockets
 6. Webpack
-7. Jest, Enzyme
-8. Prettier and TSLint for code checking and formatting
+7. Service Worker
+8. Jest, Enzyme
+9. Prettier and TSLint for code checking and formatting
 
 ## Description:
 This application allows a user to fill in a phone number and a message, 
@@ -48,3 +49,7 @@ npm run buildserver && npm run start
 ```
 In order to use this webserver you need to publish it to a hosting with 
 NodeJS env support.
+
+## Version history
+
+1.1.0 – Added ServiceWorker to support offline mode.

@@ -113,6 +113,10 @@ export default class Send extends React.PureComponent<RightContainerProps, SendS
             return;
         }
 
+        if (this.props.isOffline) {
+            return alert('This action disabled while app is offline!');
+        }
+
         this.props.messagebird.messages.create({
             originator: this.state.originator,
             recipients: [this.state.recipient],

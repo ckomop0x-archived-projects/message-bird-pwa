@@ -15,6 +15,7 @@ interface AppState {
     isUserLogged: boolean;
     balance?: BalanceResponse;
     error?: any;
+    isOffline: boolean;
 }
 
 interface AppProps {
@@ -33,14 +34,22 @@ export default class App extends React.PureComponent<AppProps, AppState> {
     constructor(props: AppProps) {
         super(props);
 
+        this.setOfflineStatus = this.setOfflineStatus.bind(this);
         this.setApiKey = this.setApiKey.bind(this);
         this.initMessagebird = this.initMessagebird.bind(this);
         this.removeApiKey = this.removeApiKey.bind(this);
         this.onExit = this.onExit.bind(this);
         this.state = {
             apiKey: '',
-            isUserLogged: false
+            isUserLogged: false,
+            isOffline: !navigator.onLine
         };
+    }
+
+    setOfflineStatus() {
+        this.setState({
+            isOffline: !navigator.onLine
+        });
     }
 
     onLogin(): void {
@@ -113,6 +122,13 @@ export default class App extends React.PureComponent<AppProps, AppState> {
 
     componentDidMount(): void {
         this.init();
+        window.addEventListener('online', this.setOfflineStatus);
+        window.addEventListener('offline', this.setOfflineStatus);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('online', this.setOfflineStatus);
+        window.removeEventListener('offline', this.setOfflineStatus);
     }
 
     render() {
@@ -143,6 +159,7 @@ export default class App extends React.PureComponent<AppProps, AppState> {
                                         <LeftMenu onExit={this.onExit} />
                                         <RightContainer
                                             match={match}
+                                            isOffline={this.state.isOffline}
                                             apiKey={this.state.apiKey}
                                             balance={this.state.balance}
                                             messagebird={this.messagebird}
