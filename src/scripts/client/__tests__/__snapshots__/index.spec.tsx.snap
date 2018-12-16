@@ -28,12 +28,8 @@ exports[`renders the App 1`] = `
   <styled.div
     id="main-app"
   >
-    <GlobalStyleComponent
-      suppressMultiMountWarning={false}
-    />
-    <GlobalStyleComponent
-      suppressMultiMountWarning={false}
-    />
+    <GlobalStyleComponent />
+    <GlobalStyleComponent />
     <Switch>
       <Route
         exact={true}

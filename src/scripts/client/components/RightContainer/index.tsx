@@ -6,7 +6,7 @@ import Sms from '../Sms/index';
 import {RightContainerStyled} from './styles';
 
 export interface RightContainerProps {
-    match?: match<any>;
+    match?: match<{}> | null;
     apiKey: string;
     balance?: BalanceResponse;
     messagebird: any;

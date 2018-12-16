@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
@@ -45,6 +46,10 @@ const webpackPlugins = [
             ]
         }
     }),
+    PRODUCTION ? new Dotenv({
+        path: './.env', // load this now instead of the ones in '.env'
+        safe: false, // load '.env.example' to verify the '.env' variables are all set. Can also be a string to a different file.
+    }): {},
     new workboxPlugin.InjectManifest({
         swSrc: './src/scripts/sw.js',
         swDest: 'service-worker.js'
@@ -53,6 +58,15 @@ const webpackPlugins = [
 
 module.exports = {
     mode: PRODUCTION ? 'production' : 'development',
+    entry: {
+        index: PRODUCTION ? ['./src/scripts/client/index.tsx'] : ['./src/scripts/client/index.tsx', 'webpack-hot-middleware/client'],
+        vendor: ['react', 'react-dom']
+    },
+    output: {
+        path: path.resolve(__dirname, 'dist/client'),
+        filename: PRODUCTION ? 'js/[name].[hash].bundle.js' : 'js/[name].bundle.js',
+        chunkFilename: PRODUCTION ? 'js/[name].[hash].bundle.js' : 'js/[name].bundle.js',
+    },
     optimization: PRODUCTION ? {
         minimizer: [
             new UglifyJsPlugin({
@@ -61,16 +75,11 @@ module.exports = {
                 sourceMap: true
             }),
             new OptimizeCSSAssetsPlugin({})
-        ]
+        ],
+        splitChunks: {
+            chunks: 'all'
+        }
     } : {},
-    entry: {
-        index: PRODUCTION ? ['./src/scripts/client/index.tsx'] : ['./src/scripts/client/index.tsx', 'webpack-hot-middleware/client'],
-        vendor: ['react', 'react-dom']
-    },
-    output: {
-        path: path.resolve(__dirname, 'dist/client'),
-        filename: PRODUCTION ? 'js/[name].[hash].bundle.js' : 'js/[name].bundle.js'
-    },
     devtool: 'source-map',
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']

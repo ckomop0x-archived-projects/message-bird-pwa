@@ -11,7 +11,7 @@ const Sms = (props: RightContainerProps) => {
                 <Route path="/sms/send" exact={true} render={() => <Send {...props} />} />
                 <Route
                     path="/sms/:filter?"
-                    render={({match}) => {
+                    render={({match}: any) => {
                         const {params} = match;
                         return <Dashboard filter={params.filter} {...props} />;
                     }}

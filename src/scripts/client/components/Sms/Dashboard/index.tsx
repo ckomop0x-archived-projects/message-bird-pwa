@@ -1,8 +1,9 @@
 import * as NProgress from 'nprogress';
 import * as React from 'react';
 import * as socketIOClient from 'socket.io-client';
+import * as Loadable from 'react-loadable';
 import getMessages, {Message} from '../../../../services/get-messages';
-import MessagesTable from './MessagesTable/index';
+// import MessagesTable from './MessagesTable/index';
 import {DashboardStyled} from './styles';
 
 export interface DashboardState {
@@ -15,13 +16,22 @@ export interface DashboardProps {
     [key: string]: any;
 }
 
+const LoadableMessagesTable = Loadable({
+    loader: () => import('./MessagesTable/index'),
+    loading() {
+        return <div>Loading...</div>;
+    },
+    delay: 20000,
+    timeout: 10000
+});
+
 export default class Dashboard extends React.Component<DashboardProps, DashboardState> {
     _isMounted: boolean;
     socket: SocketIOClient.Socket;
 
     constructor(props: DashboardProps) {
         super(props);
-        this.socket = socketIOClient(`https://message-bird.herokuapp.com`);
+        this.socket = socketIOClient({host: process.env.WEBHOOK_URL});
         this.getMessages = this.getMessages.bind(this);
         this._isMounted = false;
         this.state = {
@@ -63,9 +73,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
             this.getMessages(this.props.apiKey);
         }
 
-        this.socket.on('message', (data: any) => {
-            console.log(data);
-
+        this.socket.on('message', () => {
             return this.getMessages(this.props.apiKey);
         });
     }
@@ -100,7 +108,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
                 {messages !== [] ? (
                     <>
                         <div>Below you'll find an overview of the sent and received messages for the last 30 days.</div>
-                        <MessagesTable messages={filteredMessages} />
+                        <LoadableMessagesTable messages={filteredMessages} />
                     </>
                 ) : (
                     <div>No messages</div>
