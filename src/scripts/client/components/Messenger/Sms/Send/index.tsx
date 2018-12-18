@@ -1,6 +1,6 @@
 import * as NProgress from 'nprogress';
 import * as React from 'react';
-import {RightContainerProps} from '../../RightContainer/index';
+import {RightContainerProps} from '../../../RightContainer/index';
 import {DashboardStyled} from '../Dashboard/styles';
 import {ErrorMessage, FormField, FormTextBlock, SendButton, SendForm, SmsCount, TextArea} from './styles';
 

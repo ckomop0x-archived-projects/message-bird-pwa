@@ -74,6 +74,7 @@ module.exports = {
         'no-consecutive-blank-lines': [true, 1],
         'forin': true,
         'no-arg': true,
+        'no-submodule-imports': false,
         'no-switch-case-fall-through': true,
         'no-duplicate-variable': true,
         'no-unused-expression': true,

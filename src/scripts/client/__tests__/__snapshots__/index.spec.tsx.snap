@@ -32,18 +32,13 @@ exports[`renders the heading 1`] = `
     <GlobalStyleComponent />
     <Switch>
       <Route
-        exact={true}
-        path="/"
+        path="/messenger/:filter?"
         render={[Function]}
       />
       <Route
-        path="/sms"
+        exact={true}
+        path="/"
         render={[Function]}
-      />
-      <Redirect
-        from="*"
-        push={false}
-        to="/"
       />
     </Switch>
   </styled.div>

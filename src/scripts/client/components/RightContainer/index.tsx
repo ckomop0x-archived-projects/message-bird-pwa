@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {match} from 'react-router';
+import {match, Route, Switch} from 'react-router';
 import {BalanceResponse} from '../App/index';
-import Header from '../Header';
-import Sms from '../Sms/index';
+import Profile from '../Messenger/Profile/index';
+import Sms from '../Messenger/Sms/sms';
 import {RightContainerStyled} from './styles';
 
 export interface RightContainerProps {
@@ -16,8 +16,16 @@ export interface RightContainerProps {
 const RightContainer = (props: RightContainerProps) => {
     return (
         <RightContainerStyled>
-            <Header balance={props.balance} />
-            <Sms {...props} />
+            <Switch>
+                <Route path="/messenger/profile" exact={true} render={() => <Profile balance={props.balance} />} />
+                <Route
+                    path="/messenger/:filter?"
+                    render={({match}: any) => {
+                        const {params} = match;
+                        return <Sms filter={params.filter} {...props} />;
+                    }}
+                />
+            </Switch>
         </RightContainerStyled>
     );
 };

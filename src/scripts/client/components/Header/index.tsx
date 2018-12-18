@@ -1,9 +1,13 @@
 import * as React from 'react';
+import {BalanceResponse} from '../App/index';
 import CurrencySymbol from '../CurrencySymbol/index';
-import {Balance, CreditType, HeaderMenu, HeaderStyled, PageTitle, StyledLink, UserBalance} from './styles';
+import {Balance, CreditType, HeaderStyled, PageTitle, UserBalance} from './styles';
 
 export interface HeaderProps {
     [key: string]: any;
+    menu?: any;
+    title?: string;
+    balance: BalanceResponse | undefined;
 }
 
 const Header = (props: HeaderProps) => {
@@ -11,21 +15,8 @@ const Header = (props: HeaderProps) => {
 
     return (
         <HeaderStyled>
-            <PageTitle>Messages</PageTitle>
-            <HeaderMenu>
-                <StyledLink to="/sms" exact={true}>
-                    All messages
-                </StyledLink>
-                <StyledLink to="/sms/inbox" exact={true}>
-                    Received
-                </StyledLink>
-                <StyledLink to="/sms/outbox" exact={true}>
-                    Sent
-                </StyledLink>
-                <StyledLink to="/sms/send" exact={true}>
-                    New message
-                </StyledLink>
-            </HeaderMenu>
+            <PageTitle>{props.title}</PageTitle>
+            {props.menu ? props.menu : null}
             <Balance>
                 <CreditType>Balance</CreditType>
                 <UserBalance>

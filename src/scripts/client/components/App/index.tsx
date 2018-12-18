@@ -2,9 +2,8 @@ import * as React from 'react';
 import {Redirect, Switch} from 'react-router';
 import {Route, RouteComponentProps} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
-import LeftMenu from '../LeftMenu';
 import Login from '../Login/index';
-import RightContainer from '../RightContainer';
+import Messenger from '../Messenger/index';
 import {GlobalStyle} from '../styles/GlobalStyles';
 import {NormalizeStyles} from '../styles/NormalizeStyles';
 import {themeStyles} from '../styles/themeStyles';
@@ -39,6 +38,7 @@ export default class App extends React.PureComponent<AppProps, AppState> {
         this.initMessagebird = this.initMessagebird.bind(this);
         this.removeApiKey = this.removeApiKey.bind(this);
         this.onExit = this.onExit.bind(this);
+        this.onLogin = this.onLogin.bind(this);
         this.state = {
             apiKey: '',
             isUserLogged: false,
@@ -50,15 +50,6 @@ export default class App extends React.PureComponent<AppProps, AppState> {
         this.setState({
             isOffline: !navigator.onLine
         });
-    }
-
-    onLogin(): void {
-        this.setState(
-            {
-                isUserLogged: true
-            },
-            this.props.history.push('/sms')
-        );
     }
 
     onExit(): void {
@@ -84,10 +75,10 @@ export default class App extends React.PureComponent<AppProps, AppState> {
                 }
                 this.messagebird = messagebird;
                 this.setState({
-                    balance: balanceResponse
+                    balance: balanceResponse,
+                    isUserLogged: true
                 });
                 this.setApiKey(apiKey);
-                this.onLogin();
             }
         );
     }
@@ -106,12 +97,20 @@ export default class App extends React.PureComponent<AppProps, AppState> {
         });
     }
 
+    onLogin(apiKey: string) {
+        this.initMessagebird(apiKey);
+        this.props.history.push('/messenger');
+    }
+
     init(): void {
         const apiKey: string | null = localStorage.getItem('apiKey');
 
         if (apiKey) {
+            this.setState({
+                apiKey,
+                isUserLogged: true
+            });
             this.initMessagebird(apiKey);
-            this.onLogin();
         }
     }
 
@@ -132,8 +131,6 @@ export default class App extends React.PureComponent<AppProps, AppState> {
     }
 
     render() {
-        const {isUserLogged} = this.state;
-
         return (
             <ThemeProvider theme={themeStyles}>
                 <MainApp id="main-app">
@@ -141,36 +138,31 @@ export default class App extends React.PureComponent<AppProps, AppState> {
                     <GlobalStyle />
                     <Switch>
                         <Route
-                            path="/"
-                            exact={true}
-                            render={() => {
-                                return isUserLogged ? (
-                                    <Redirect to="/sms" />
-                                ) : (
-                                    <Login onKeyChange={this.initMessagebird} error={this.state.error} />
+                            path="/messenger/:filter?"
+                            render={({match}: RouteComponentProps) => {
+                                return (
+                                    <Messenger
+                                        onExit={this.onExit}
+                                        match={match}
+                                        isOffline={this.state.isOffline}
+                                        apiKey={this.state.apiKey}
+                                        balance={this.state.balance}
+                                        messagebird={this.messagebird}
+                                    />
                                 );
                             }}
                         />
                         <Route
-                            path="/sms"
-                            render={({match}: RouteComponentProps) => {
-                                return isUserLogged ? (
-                                    <>
-                                        <LeftMenu onExit={this.onExit} />
-                                        <RightContainer
-                                            match={match}
-                                            isOffline={this.state.isOffline}
-                                            apiKey={this.state.apiKey}
-                                            balance={this.state.balance}
-                                            messagebird={this.messagebird}
-                                        />
-                                    </>
+                            path="/"
+                            exact={true}
+                            render={() =>
+                                !this.state.isUserLogged ? (
+                                    <Login onKeyChange={this.onLogin} error={this.state.error} />
                                 ) : (
-                                    <Redirect to="/" />
-                                );
-                            }}
+                                    <Redirect to="/messenger" />
+                                )
+                            }
                         />
-                        <Redirect from="*" to={isUserLogged ? '/sms' : '/'} />
                     </Switch>
                 </MainApp>
             </ThemeProvider>

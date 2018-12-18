@@ -19,7 +19,8 @@
       "es2015",
       "es2017",
       "dom"
-    ]
+    ],
+    "types": ["jquery", "node"]
   },
   "include": [
     "./src/scripts/server/index.ts",

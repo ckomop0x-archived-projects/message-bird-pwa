@@ -2,8 +2,7 @@ import * as NProgress from 'nprogress';
 import * as React from 'react';
 import * as socketIOClient from 'socket.io-client';
 import * as Loadable from 'react-loadable';
-import getMessages, {Message} from '../../../../services/get-messages';
-// import MessagesTable from './MessagesTable/index';
+import getMessages, {Message} from '../../../../../services/message-bird-api/get-messages';
 import {DashboardStyled} from './styles';
 
 export interface DashboardState {
@@ -80,6 +79,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
 
     componentWillUnmount(): void {
         this.socket.disconnect();
+        this._isMounted = false;
     }
 
     componentWillMount() {
