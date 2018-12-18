@@ -159,7 +159,6 @@ if (
             .append(`<em>${payload.data.body}</em>`);
 
         // register fake ServiceWorker for show notification on mobile devices
-        navigator.serviceWorker.register('firebase-messaging-sw.js');
         Notification.requestPermission((permission) => {
             if (permission === 'granted') {
                 navigator.serviceWorker.ready
@@ -239,3 +238,5 @@ if (
         info
     });
 }
+
+navigator.serviceWorker.register('firebase-messaging-sw.js');
