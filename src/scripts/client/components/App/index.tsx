@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Redirect, Switch} from 'react-router';
 import {Route, RouteComponentProps} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
+import FirebaseMessaging, {FirebaseState} from '../../FirebaseMessaging';
 import Login from '../Login/index';
 import Messenger from '../Messenger/index';
 import {GlobalStyle} from '../styles/GlobalStyles';
@@ -9,12 +10,14 @@ import {NormalizeStyles} from '../styles/NormalizeStyles';
 import {themeStyles} from '../styles/themeStyles';
 import {MainApp} from './styles';
 
-interface AppState {
+interface AppState extends FirebaseState {
     apiKey: string;
     isUserLogged: boolean;
     balance?: BalanceResponse;
     error?: any;
     isOffline: boolean;
+    tokenValue: string;
+    isRegistered: boolean;
 }
 
 interface AppProps {
@@ -27,23 +30,32 @@ export interface BalanceResponse {
     type: string;
 }
 
-export default class App extends React.PureComponent<AppProps, AppState> {
+export default class App extends FirebaseMessaging<AppProps, AppState> {
     messagebird: any;
+    state = {
+        apiKey: '',
+        isUserLogged: false,
+        isOffline: !navigator.onLine,
+        tokenValue: '',
+        isRegistered: false,
+        balance: undefined,
+        error: undefined
+    };
 
     constructor(props: AppProps) {
         super(props);
-
+        this.initializeFirebaseApp('607900386765');
+        this.initMessaging();
+        this.initFirebase();
+        this.onRegistration = this.onRegistration.bind(this);
+        this.onDelete = this.onDelete.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
         this.setOfflineStatus = this.setOfflineStatus.bind(this);
         this.setApiKey = this.setApiKey.bind(this);
         this.initMessagebird = this.initMessagebird.bind(this);
         this.removeApiKey = this.removeApiKey.bind(this);
         this.onExit = this.onExit.bind(this);
         this.onLogin = this.onLogin.bind(this);
-        this.state = {
-            apiKey: '',
-            isUserLogged: false,
-            isOffline: !navigator.onLine
-        };
     }
 
     setOfflineStatus() {
@@ -142,6 +154,7 @@ export default class App extends React.PureComponent<AppProps, AppState> {
                             render={({match}: RouteComponentProps) => {
                                 return (
                                     <Messenger
+                                        resetUI={this.resetUI}
                                         onExit={this.onExit}
                                         match={match}
                                         isOffline={this.state.isOffline}

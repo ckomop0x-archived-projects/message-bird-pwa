@@ -7,6 +7,8 @@
     "outDir": "./dist/",
     "strict": true,
     "preserveConstEnums": true,
+    "strictPropertyInitialization": true,
+    "strictNullChecks": true,
     "removeComments": true,
     "sourceMap": true,
     "noEmitHelpers": true,

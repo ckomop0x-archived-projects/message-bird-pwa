@@ -6,6 +6,7 @@ import Sms from '../Messenger/Sms/sms';
 import {RightContainerStyled} from './styles';
 
 export interface RightContainerProps {
+    [key: string]: any;
     match?: match<{}> | null;
     apiKey: string;
     balance?: BalanceResponse;
@@ -17,7 +18,11 @@ const RightContainer = (props: RightContainerProps) => {
     return (
         <RightContainerStyled>
             <Switch>
-                <Route path="/messenger/profile" exact={true} render={() => <Profile balance={props.balance} />} />
+                <Route
+                    path="/messenger/profile"
+                    exact={true}
+                    render={() => <Profile balance={props.balance} resetUI={props.resetUI} />}
+                />
                 <Route
                     path="/messenger/:filter?"
                     render={({match}: any) => {

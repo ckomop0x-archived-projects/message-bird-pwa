@@ -12,6 +12,7 @@ const Messenger = (props: any) => {
                 apiKey={props.apiKey}
                 balance={props.balance}
                 messagebird={props.messagebird}
+                resetUI={props.resetUI}
             />
         </>
     );
