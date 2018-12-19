@@ -22,7 +22,7 @@
       "es2017",
       "dom"
     ],
-    "types": ["jquery", "node"]
+    "types": ["jquery", "node", "jest"]
   },
   "include": [
     "./src/scripts/server/index.ts",
