@@ -47,9 +47,10 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
         this.initializeFirebaseApp('607900386765');
         this.initMessaging();
         this.initFirebase();
-        this.onRegistration = this.onRegistration.bind(this);
+        this.onRequestPermission = this.onRequestPermission.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.sendNotification = this.sendNotification.bind(this);
         this.setOfflineStatus = this.setOfflineStatus.bind(this);
         this.setApiKey = this.setApiKey.bind(this);
         this.initMessagebird = this.initMessagebird.bind(this);
@@ -154,6 +155,8 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
                             render={({match}: RouteComponentProps) => {
                                 return (
                                     <Messenger
+                                        sendNotification={this.sendNotification}
+                                        onRequestPermission={this.onRequestPermission}
                                         resetUI={this.resetUI}
                                         onExit={this.onExit}
                                         match={match}

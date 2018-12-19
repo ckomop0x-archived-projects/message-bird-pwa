@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
 import * as React from 'react';
 
 export interface FirebaseState {
@@ -22,87 +22,6 @@ export default class FirebaseMessaging<
     private updateUIForPushPermissionRequired() {
         // bt_register.attr('disabled', 'disabled');
         this.resetUI();
-    }
-
-    private async getToken() {
-        if (!this.messaging) {
-            return;
-        }
-
-        try {
-            await this.messaging.requestPermission();
-
-            try {
-                const currentToken: string = (await this.messaging.getToken()) || '';
-
-                if (currentToken) {
-                    this.sendTokenToServer(currentToken);
-                    this.updateUIForPushEnabled(currentToken);
-                } else {
-                    this.showError('No Instance ID token available. Request permission to generate one', {});
-                    this.updateUIForPushPermissionRequired();
-                    this.setTokenSentToServer('');
-                }
-            } catch (error) {
-                this.showError('An error occurred while retrieving token', error);
-                this.updateUIForPushPermissionRequired();
-                this.setTokenSentToServer('');
-            }
-        } catch (error) {
-            this.showError('Unable to get permission to notify', error);
-        }
-    }
-
-    private async sendNotification(notification: any) {
-        console.log('Send notification', notification);
-
-        // // hide last notification data
-        // if (info && massage_row) {
-        //     info.hide();
-        //     massage_row.hide();
-        // }
-
-        if (!this.messaging) {
-            return;
-        }
-
-        try {
-            const currentToken: string = (await this.messaging.getToken()) || '';
-
-            fetch('https://fcm.googleapis.com/fcm/send', {
-                method: 'POST',
-                headers: {
-                    Authorization: 'key=' + this.key,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    // Firebase loses 'image' from the notification.
-                    // And you must see this: https://github.com/firebase/quickstart-js/issues/71
-                    data: notification,
-                    to: currentToken
-                })
-            })
-                .then((response) => {
-                    return response.json();
-                })
-                .then((json) => {
-                    console.log('Response', json);
-                    // if (massage_row && massage_id) {
-                    //     if (json.success === 1) {
-                    //         massage_row.show();
-                    //         massage_id.text(json.results[0].message_id);
-                    //     } else {
-                    //         massage_row.hide();
-                    //         massage_id.text(json.results[0].error);
-                    //     }
-                    // }
-                })
-                .catch((error) => {
-                    this.showError('', error);
-                });
-        } catch (error) {
-            this.showError('Error retrieving Instance ID token', error);
-        }
     }
 
     private updateUIForPushEnabled(currentToken: string) {
@@ -144,6 +63,103 @@ export default class FirebaseMessaging<
         }
     }
 
+    async getToken() {
+        if (!this.messaging) {
+            return;
+        }
+
+        try {
+            await this.messaging.requestPermission();
+
+            try {
+                const currentToken: any = await this.messaging.getToken();
+
+                if (currentToken) {
+                    this.sendTokenToServer(currentToken);
+                    this.updateUIForPushEnabled(currentToken);
+                } else {
+                    this.showError('No Instance ID token available. Request permission to generate one', {});
+                    this.updateUIForPushPermissionRequired();
+                    this.setTokenSentToServer('');
+                }
+            } catch (error) {
+                this.showError('An error occurred while retrieving token', error);
+                this.updateUIForPushPermissionRequired();
+                this.setTokenSentToServer('');
+            }
+        } catch (error) {
+            this.showError('Unable to get permission to notify', error);
+        }
+    }
+
+    async sendNotification(notification: any = {}) {
+        console.log('Send notification', notification);
+
+        // // hide last notification data
+        // if (info && massage_row) {
+        //     info.hide();
+        //     massage_row.hide();
+        // }
+
+        if (!this.messaging) {
+            return;
+        }
+
+        try {
+            const currentToken: any = await this.messaging.getToken();
+
+            console.log('currentToken', currentToken);
+
+            fetch('https://fcm.googleapis.com/fcm/send', {
+                method: 'POST',
+                headers: {
+                    Authorization: 'key=' + this.key,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    // Firebase loses 'image' from the notification.
+                    // And you must see this: https://github.com/firebase/quickstart-js/issues/71
+                    data: notification,
+                    to: currentToken
+                })
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((json) => {
+                    console.log('Response', json);
+                    // if (massage_row && massage_id) {
+                    //     if (json.success === 1) {
+                    //         massage_row.show();
+                    //         massage_id.text(json.results[0].message_id);
+                    //     } else {
+                    //         massage_row.hide();
+                    //         massage_id.text(json.results[0].error);
+                    //     }
+                    // }
+                })
+                .catch((error) => {
+                    this.showError('', error);
+                });
+        } catch (error) {
+            this.showError('Error retrieving Instance ID token', error);
+        }
+    }
+
+    async onRequestPermission() {
+        console.log(456);
+        if (!this.messaging) {
+            return;
+        }
+
+        try {
+            await this.messaging.requestPermission();
+            this.initFirebase();
+        } catch (e) {
+            this.showError(e.message);
+        }
+    }
+
     resetUI(): void {
         this.tokenValue = '';
         this.isRegistered = false;
@@ -170,9 +186,9 @@ export default class FirebaseMessaging<
         }
     }
 
-    onRegistration(): void {
-        this.getToken();
-    }
+    // onRegistration(): void {
+    //     this.getToken();
+    // }
 
     async onDelete() {
         if (!this.messaging) {

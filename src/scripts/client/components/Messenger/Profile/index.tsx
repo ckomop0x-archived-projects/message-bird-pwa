@@ -5,7 +5,6 @@ import Header from '../../Header/index';
 export interface ProfileProps {
     [key: string]: any;
     balance: BalanceResponse | undefined;
-    onRegistration?: () => void;
     onDelete?: () => void;
     onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
 }
@@ -28,17 +27,21 @@ const Profile = (props: ProfileProps) => {
             Profile settings
             <main className="section no-pad-bot" id="index-banner">
                 <div className="container">
-                    <div className="card-panel deep-orange darken-1 white-text z-depth-2" id="alert">
-                        <i className="material-icons left deep-orange-text text-darken-4">warning</i>
-                        <strong>Error</strong>
-                        <em id="alert-message" />
-                    </div>
-                    <div className="card-panel green darken-1 white-text z-depth-2" id="info">
-                        <i className="material-icons left green-text text-darken-4">info</i>
-                        <span id="info-message" />
-                    </div>
+                    {props.error && (
+                        <div className="card-panel deep-orange darken-1 white-text z-depth-2" id="alert">
+                            <i className="material-icons left deep-orange-text text-darken-4">warning</i>
+                            <strong>Error</strong>
+                            <em id="alert-message" />
+                        </div>
+                    )}
+                    {props.message && (
+                        <div className="card-panel green darken-1 white-text z-depth-2" id="info">
+                            <i className="material-icons left green-text text-darken-4">info</i>
+                            <span id="info-message" />
+                        </div>
+                    )}
                     <div className="row center">
-                        <h4 className="header col s12 light" onClick={props.resetUI}>
+                        <h4 className="header col s12 light" onClick={props.sendNotification}>
                             Instance ID Token
                         </h4>
                         <p id="token" />
@@ -48,7 +51,7 @@ const Profile = (props: ProfileProps) => {
                             type="button"
                             className="btn-large waves-effect waves-light orange"
                             id="register"
-                            onClick={props.onRegistration}>
+                            onClick={props.onRequestPermission}>
                             <i className="material-icons left">vpn_key</i>
                             Register
                         </button>

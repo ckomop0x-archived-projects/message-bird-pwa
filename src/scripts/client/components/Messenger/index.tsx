@@ -7,6 +7,8 @@ const Messenger = (props: any) => {
         <>
             <LeftMenu onExit={props.onExit} isOffline={props.isOffline} />
             <RightContainer
+                sendNotification={props.sendNotification}
+                onRequestPermission={props.onRequestPermission}
                 match={props.match}
                 isOffline={props.isOffline}
                 apiKey={props.apiKey}

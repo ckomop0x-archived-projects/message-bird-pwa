@@ -12,6 +12,8 @@ export interface RightContainerProps {
     balance?: BalanceResponse;
     messagebird: any;
     isOffline: boolean;
+    resetUI: () => void;
+    sendNotification: () => void;
 }
 
 const RightContainer = (props: RightContainerProps) => {
@@ -21,7 +23,14 @@ const RightContainer = (props: RightContainerProps) => {
                 <Route
                     path="/messenger/profile"
                     exact={true}
-                    render={() => <Profile balance={props.balance} resetUI={props.resetUI} />}
+                    render={() => (
+                        <Profile
+                            balance={props.balance}
+                            onRequestPermission={props.onRequestPermission}
+                            resetUI={props.resetUI}
+                            sendNotification={props.sendNotification}
+                        />
+                    )}
                 />
                 <Route
                     path="/messenger/:filter?"
