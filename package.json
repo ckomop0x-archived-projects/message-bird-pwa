@@ -17,7 +17,7 @@
     "prettier": "prettier --write 'src/**/*.{ts,tsx,json}'",
     "start": "node ./dist/server/index.js",
     "startdev": "node_modules/.bin/webpack-dev-server",
-    "test": "npm run lint && npm run lintcss && npx jest --no-cache --no-watchman",
+    "test": "npm run lint && npm run lintcss && npx jest --no-cache --no-watchman --env=jsdom --browser",
     "test:watch": "npx jest --watch",
     "test:coverage": "npx jest --coverage"
   },
