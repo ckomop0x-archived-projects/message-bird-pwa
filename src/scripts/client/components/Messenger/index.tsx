@@ -8,8 +8,11 @@ const Messenger = (props: any) => {
             <LeftMenu onExit={props.onExit} isOffline={props.isOffline} />
             <RightContainer
                 sendNotification={props.sendNotification}
+                onSubmit={props.onSubmit}
                 onRequestPermission={props.onRequestPermission}
+                onDelete={props.onDelete}
                 match={props.match}
+                error={props.error}
                 isOffline={props.isOffline}
                 apiKey={props.apiKey}
                 balance={props.balance}

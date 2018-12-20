@@ -44,9 +44,9 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
 
     constructor(props: AppProps) {
         super(props);
-        this.initializeFirebaseApp('607900386765');
         this.initMessaging();
         this.initFirebase();
+        this.init();
         this.onRequestPermission = this.onRequestPermission.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -155,8 +155,11 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
                             render={({match}: RouteComponentProps) => {
                                 return (
                                     <Messenger
+                                        error={this.error}
+                                        onSubmit={this.onSubmit}
                                         sendNotification={this.sendNotification}
                                         onRequestPermission={this.onRequestPermission}
+                                        onDelete={this.onDelete}
                                         resetUI={this.resetUI}
                                         onExit={this.onExit}
                                         match={match}

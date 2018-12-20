@@ -61,6 +61,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
 
         if (apiKey !== prevProps.apiKey) {
             this.getMessages(apiKey);
+            this.props.sendNotification();
         }
     }
 

@@ -78,12 +78,18 @@ self.addEventListener('fetch', event => {
     }
 })
 
-self.addEventListener('push', event => {
-    event.waitUntil(self.registration.showNotification('Todo List', {
-        icon: '/icon-120.png',
-        body: event.data.text()
-    }))
-})
+// self.addEventListener('push', event => {
+//     event.waitUntil(self.registration.showNotification('Did you make a $1,000,000 purchase at Dr. Evil...', {
+//         body: "Did you make a $1,000,000 purchase at Dr. Evil...",
+//         icon: "images/ccard.png",
+//         vibrate: [200, 100, 200, 100, 200, 100, 400],
+//         tag: "request",
+//         actions: [
+//             { "action": "yes", "title": "Yes", "icon": "images/yes.png" },
+//             { "action": "no", "title": "No", "icon": "images/no.png" }
+//         ]
+//     }))
+// })
 
 workbox.precaching.precacheAndRoute(self.__precacheManifest || []);
 workbox.core.setLogLevel(workbox.core.LOG_LEVELS.silent);

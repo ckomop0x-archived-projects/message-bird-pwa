@@ -1,4 +1,5 @@
-import * as firebase from 'firebase/app';
+import * as firebase from 'firebase';
+import 'firebase/messaging';
 import * as React from 'react';
 
 export interface FirebaseState {
@@ -15,25 +16,16 @@ export default class FirebaseMessaging<
 > extends React.PureComponent<Props, State> {
     private key: string =
         'AAAAjYmvxc0:APA91bGL0G4icF0xld2ENcDl0KUVvc1Iac2P3uj-luZuEvIeBrIgaMTShKDKNFsIdTtsn06iMAPJwnbzdD4BNhtDbF18iEhHiZES93uAVOk5_8F0YnxPcxvZkBPUS1I_IGa-yjwb1SsS';
-    messaging: firebase.messaging.Messaging | undefined = undefined;
+    // messaging: firebase.messaging.Messaging | undefined = undefined;
+    app = firebase.initializeApp({messagingSenderId: '607900386765'});
+    messaging = firebase.messaging();
     tokenValue: string = '';
+    error: string = '';
     isRegistered: boolean = false;
-
-    private updateUIForPushPermissionRequired() {
-        // bt_register.attr('disabled', 'disabled');
-        this.resetUI();
-    }
-
-    private updateUIForPushEnabled(currentToken: string) {
-        console.log(currentToken);
-        // token.text(currentToken);
-        // bt_register.hide();
-        // bt_delete.show();
-        // form.show();
-    }
 
     private showError(title: string, error?: any) {
         if (error !== 'undefined') {
+            this.error = error;
             console.error(title, error);
         } else {
             console.error(title);
@@ -76,15 +68,12 @@ export default class FirebaseMessaging<
 
                 if (currentToken) {
                     this.sendTokenToServer(currentToken);
-                    this.updateUIForPushEnabled(currentToken);
                 } else {
                     this.showError('No Instance ID token available. Request permission to generate one', {});
-                    this.updateUIForPushPermissionRequired();
                     this.setTokenSentToServer('');
                 }
             } catch (error) {
                 this.showError('An error occurred while retrieving token', error);
-                this.updateUIForPushPermissionRequired();
                 this.setTokenSentToServer('');
             }
         } catch (error) {
@@ -92,22 +81,11 @@ export default class FirebaseMessaging<
         }
     }
 
-    async sendNotification(notification: any = {}) {
-        console.log('Send notification', notification);
-
-        // // hide last notification data
-        // if (info && massage_row) {
-        //     info.hide();
-        //     massage_row.hide();
-        // }
-
-        if (!this.messaging) {
-            return;
-        }
+    async sendNotification() {
+        console.log('Send notification');
 
         try {
-            const currentToken: any = await this.messaging.getToken();
-
+            const currentToken: string | null = await this.messaging.getToken();
             console.log('currentToken', currentToken);
 
             fetch('https://fcm.googleapis.com/fcm/send', {
@@ -119,7 +97,14 @@ export default class FirebaseMessaging<
                 body: JSON.stringify({
                     // Firebase loses 'image' from the notification.
                     // And you must see this: https://github.com/firebase/quickstart-js/issues/71
-                    data: notification,
+                    data: {
+                        body: "It's found today at 16:27",
+                        click_action:
+                            'https://www.nasa.gov/feature/goddard/2016/hubble-sees-a-star-inflating-a-giant-bubble',
+                        icon: 'https://peter-gribanov.github.io/serviceworker/Bubble-Nebula.jpg',
+                        image: 'https://peter-gribanov.github.io/serviceworker/Bubble-Nebula_big.jpg',
+                        title: 'Bubble Nebula'
+                    },
                     to: currentToken
                 })
             })
@@ -128,15 +113,6 @@ export default class FirebaseMessaging<
                 })
                 .then((json) => {
                     console.log('Response', json);
-                    // if (massage_row && massage_id) {
-                    //     if (json.success === 1) {
-                    //         massage_row.show();
-                    //         massage_id.text(json.results[0].message_id);
-                    //     } else {
-                    //         massage_row.hide();
-                    //         massage_id.text(json.results[0].error);
-                    //     }
-                    // }
                 })
                 .catch((error) => {
                     this.showError('', error);
@@ -147,7 +123,6 @@ export default class FirebaseMessaging<
     }
 
     async onRequestPermission() {
-        console.log(456);
         if (!this.messaging) {
             return;
         }
@@ -167,12 +142,6 @@ export default class FirebaseMessaging<
         console.log('resetUI');
     }
 
-    initializeFirebaseApp(messagingSenderId: string) {
-        firebase.initializeApp({
-            messagingSenderId
-        });
-    }
-
     initMessaging() {
         if (
             'Notification' in window &&
@@ -186,17 +155,12 @@ export default class FirebaseMessaging<
         }
     }
 
-    // onRegistration(): void {
-    //     this.getToken();
-    // }
-
     async onDelete() {
-        if (!this.messaging) {
-            return;
-        }
+        console.log('onDelete');
 
         try {
             const currentToken: string = (await this.messaging.getToken()) || '';
+
             this.messaging
                 .deleteToken(currentToken)
                 .then(() => {
@@ -216,9 +180,8 @@ export default class FirebaseMessaging<
     onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        const notification: any = {};
-
-        this.sendNotification(notification);
+        console.log('onSubmit');
+        this.sendNotification();
     }
 
     initFirebase(): void {
@@ -264,7 +227,6 @@ export default class FirebaseMessaging<
                 console.log('Token refreshed');
                 // Send Instance ID token to app server.
                 this.sendTokenToServer(refreshedToken);
-                this.updateUIForPushEnabled(refreshedToken);
             } catch (error) {
                 this.showError('Unable to retrieve refreshed token', {error});
             }
@@ -281,14 +243,11 @@ export default class FirebaseMessaging<
             this.showError('postMessage not supported');
         }
 
-        console.warn('This browser does not support desktop notification.');
-        console.log('Is HTTPS', window.location.protocol === 'https:');
-        console.log('Support Notification', 'Notification' in window);
-        console.log('Support ServiceWorker', 'serviceWorker' in navigator);
-        console.log('Support LocalStorage', 'localStorage' in window);
-        console.log('Support fetch', 'fetch' in window);
-        console.log('Support postMessage', 'postMessage' in window);
-
-        this.updateUIForPushPermissionRequired();
+        // console.log('Is HTTPS', window.location.protocol === 'https:');
+        // console.log('Support Notification', 'Notification' in window);
+        // console.log('Support ServiceWorker', 'serviceWorker' in navigator);
+        // console.log('Support LocalStorage', 'localStorage' in window);
+        // console.log('Support fetch', 'fetch' in window);
+        // console.log('Support postMessage', 'postMessage' in window);
     }
 }

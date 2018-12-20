@@ -20,18 +20,7 @@ const RightContainer = (props: RightContainerProps) => {
     return (
         <RightContainerStyled>
             <Switch>
-                <Route
-                    path="/messenger/profile"
-                    exact={true}
-                    render={() => (
-                        <Profile
-                            balance={props.balance}
-                            onRequestPermission={props.onRequestPermission}
-                            resetUI={props.resetUI}
-                            sendNotification={props.sendNotification}
-                        />
-                    )}
-                />
+                <Route path="/messenger/profile" exact={true} render={() => <Profile {...props} />} />
                 <Route
                     path="/messenger/:filter?"
                     render={({match}: any) => {
