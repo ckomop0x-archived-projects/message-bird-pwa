@@ -61,7 +61,6 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
 
         if (apiKey !== prevProps.apiKey) {
             this.getMessages(apiKey);
-            this.props.sendNotification();
         }
     }
 
@@ -73,8 +72,12 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
             this.getMessages(this.props.apiKey);
         }
 
-        this.socket.on('message', (messageData: any) => {
-            console.log('messageData ==>', messageData);
+        this.socket.on('message', (messageData: string) => {
+            if (messageData !== 'newmessage') {
+                return;
+            }
+
+            this.props.sendNotification();
 
             return this.getMessages(this.props.apiKey);
         });
