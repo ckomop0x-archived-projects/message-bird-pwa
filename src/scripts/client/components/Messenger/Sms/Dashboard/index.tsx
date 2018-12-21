@@ -82,7 +82,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
                 click_action: '/#/messenger/',
                 icon: 'https://peter-gribanov.github.io/serviceworker/Bubble-Nebula.jpg',
                 image: 'https://peter-gribanov.github.io/serviceworker/Bubble-Nebula_big.jpg',
-                title: 'You have new message'
+                title: 'You have a new message'
             });
 
             return this.getMessages(this.props.apiKey);

@@ -183,8 +183,8 @@ export default class FirebaseMessaging<
         this.sendNotification({
             body: 'Test message',
             click_action: '/#/messenger/profile/',
-            icon: 'https://peter-gribanov.github.io/serviceworker/Bubble-Nebula.jpg',
-            image: 'https://peter-gribanov.github.io/serviceworker/Bubble-Nebula_big.jpg',
+            icon: require('../../assets/favicon.png'),
+            image: require('../../assets/favicon.png'),
             title: 'Test message from profile v1.1'
         });
     }

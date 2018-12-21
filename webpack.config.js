@@ -53,11 +53,11 @@ const webpackPlugins = [
         crossorigin: 'use-credentials', //can be null, use-credentials or anonymous
         icons: [
             {
-                src: path.resolve('src/assets/icon-192x192.png'),
+                src: path.resolve('src/assets/favicon.png'),
                 sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
             },
             {
-                src: path.resolve('src/assets/icon-512x512.png'),
+                src: path.resolve('src/assets/favicon.png'),
                 size: '1024x1024' // you can also use the specifications pattern
             }
         ]
@@ -125,7 +125,7 @@ module.exports = {
                 use: loaders
             },
             {
-                test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
+                test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.(png|jpg|gif|svg)($|\?)/,
                 use: 'url-loader'
             },
             {
