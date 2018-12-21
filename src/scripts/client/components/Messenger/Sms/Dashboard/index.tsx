@@ -73,7 +73,9 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
             this.getMessages(this.props.apiKey);
         }
 
-        this.socket.on('message', () => {
+        this.socket.on('message', (messageData: any) => {
+            console.log('messageData ==>', messageData);
+
             return this.getMessages(this.props.apiKey);
         });
     }
