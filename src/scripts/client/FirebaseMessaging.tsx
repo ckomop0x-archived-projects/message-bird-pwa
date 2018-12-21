@@ -81,8 +81,8 @@ export default class FirebaseMessaging<
         }
     }
 
-    async sendNotification() {
-        console.log('Send notification');
+    async sendNotification(notification?: any) {
+        console.log('Send notification', notification);
 
         try {
             const currentToken: string | null = await this.messaging.getToken();
@@ -97,13 +97,12 @@ export default class FirebaseMessaging<
                 body: JSON.stringify({
                     // Firebase loses 'image' from the notification.
                     // And you must see this: https://github.com/firebase/quickstart-js/issues/71
-                    data: {
-                        body: "It's found today at 16:27",
-                        click_action:
-                            'https://www.nasa.gov/feature/goddard/2016/hubble-sees-a-star-inflating-a-giant-bubble',
+                    data: notification || {
+                        body: 'Some text',
+                        click_action: 'http://localhost:3000/#/messenger/',
                         icon: 'https://peter-gribanov.github.io/serviceworker/Bubble-Nebula.jpg',
                         image: 'https://peter-gribanov.github.io/serviceworker/Bubble-Nebula_big.jpg',
-                        title: 'Bubble Nebula'
+                        title: 'Default message'
                     },
                     to: currentToken
                 })
@@ -181,7 +180,13 @@ export default class FirebaseMessaging<
         event.preventDefault();
 
         console.log('onSubmit');
-        this.sendNotification();
+        this.sendNotification({
+            body: 'Read message now',
+            click_action: '/messenger/',
+            icon: 'https://peter-gribanov.github.io/serviceworker/Bubble-Nebula.jpg',
+            image: 'https://peter-gribanov.github.io/serviceworker/Bubble-Nebula_big.jpg',
+            title: 'You have new message'
+        });
     }
 
     initFirebase(): void {
