@@ -80,8 +80,8 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
             this.props.sendNotification({
                 body: 'Read message now',
                 click_action: '/#/messenger/',
-                icon: 'https://peter-gribanov.github.io/serviceworker/Bubble-Nebula.jpg',
-                image: 'https://peter-gribanov.github.io/serviceworker/Bubble-Nebula_big.jpg',
+                icon: require('../../../../../../assets/favicon.png'),
+                image: require('../../../../../../assets/favicon.png'),
                 title: 'You have a new message'
             });
 
