@@ -181,11 +181,11 @@ export default class FirebaseMessaging<
 
         console.log('onSubmit');
         this.sendNotification({
-            body: 'Read message now',
-            click_action: '/messenger/',
+            body: 'Test message',
+            click_action: '/#/messenger/profile/',
             icon: 'https://peter-gribanov.github.io/serviceworker/Bubble-Nebula.jpg',
             image: 'https://peter-gribanov.github.io/serviceworker/Bubble-Nebula_big.jpg',
-            title: 'You have new message'
+            title: 'Test message from profile v1.1'
         });
     }
 
