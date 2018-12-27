@@ -13,7 +13,6 @@ import {MainApp} from './styles';
 
 interface AppState extends FirebaseState {
     apiKey: string;
-    isUserLogged: boolean;
     balance?: BalanceResponse;
     error?: any;
     isOffline: boolean;
@@ -34,15 +33,6 @@ export interface BalanceResponse {
 export default class App extends FirebaseMessaging<AppProps, AppState> {
     socket: SocketIOClient.Socket | undefined;
     messagebird: any;
-    state = {
-        apiKey: '',
-        isUserLogged: false,
-        isOffline: !navigator.onLine,
-        tokenValue: '',
-        isRegistered: false,
-        balance: undefined,
-        error: undefined
-    };
 
     constructor(props: AppProps) {
         super(props);
@@ -60,6 +50,15 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
         this.removeApiKey = this.removeApiKey.bind(this);
         this.onExit = this.onExit.bind(this);
         this.onLogin = this.onLogin.bind(this);
+
+        this.state = {
+            apiKey: this.getApiKey(),
+            isOffline: !navigator.onLine,
+            tokenValue: '',
+            isRegistered: false,
+            balance: undefined,
+            error: undefined
+        };
     }
 
     setOfflineStatus() {
@@ -70,12 +69,7 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
 
     onExit(): void {
         this.removeApiKey();
-        this.setState(
-            {
-                isUserLogged: false
-            },
-            this.props.history.push('/')
-        );
+        this.props.history.push('/');
         if (this.socket) {
             this.socket.disconnect();
         }
@@ -94,8 +88,7 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
                 }
                 this.messagebird = messagebird;
                 this.setState({
-                    balance: balanceResponse,
-                    isUserLogged: true
+                    balance: balanceResponse
                 });
                 this.setApiKey(apiKey);
                 this.socket = socketIOClient({host: process.env.WEBHOOK_URL});
@@ -122,13 +115,16 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
         this.props.history.push('/messenger');
     }
 
+    getApiKey() {
+        return localStorage.getItem('apiKey') || '';
+    }
+
     init(): void {
-        const apiKey: string | null = localStorage.getItem('apiKey');
+        const apiKey: string = this.getApiKey();
 
         if (apiKey) {
             this.setState({
-                apiKey,
-                isUserLogged: true
+                apiKey
             });
             this.initMessagebird(apiKey);
         }
@@ -162,8 +158,8 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
                     <Switch>
                         <Route
                             path="/messenger/:filter?"
-                            render={({match}: RouteComponentProps) => {
-                                return (
+                            render={({match}: RouteComponentProps) =>
+                                this.state.apiKey ? (
                                     <Messenger
                                         socket={this.socket}
                                         error={this.error}
@@ -179,14 +175,16 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
                                         balance={this.state.balance}
                                         messagebird={this.messagebird}
                                     />
-                                );
-                            }}
+                                ) : (
+                                    <Redirect to="/" />
+                                )
+                            }
                         />
                         <Route
                             path="/"
                             exact={true}
                             render={() =>
-                                !this.state.isUserLogged ? (
+                                !this.state.apiKey ? (
                                     <Login onKeyChange={this.onLogin} error={this.state.error} />
                                 ) : (
                                     <Redirect to="/messenger" />
