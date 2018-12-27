@@ -1,6 +1,5 @@
 import * as NProgress from 'nprogress';
 import * as React from 'react';
-import * as socketIOClient from 'socket.io-client';
 import * as Loadable from 'react-loadable';
 import getMessages, {Message} from '../../../../../services/message-bird-api/get-messages';
 import {DashboardStyled} from './styles';
@@ -26,11 +25,9 @@ const LoadableMessagesTable = Loadable({
 
 export default class Dashboard extends React.Component<DashboardProps, DashboardState> {
     _isMounted: boolean;
-    socket: SocketIOClient.Socket;
 
     constructor(props: DashboardProps) {
         super(props);
-        this.socket = socketIOClient({host: process.env.WEBHOOK_URL});
         this.getMessages = this.getMessages.bind(this);
         this._isMounted = false;
         this.state = {
@@ -72,7 +69,7 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
             this.getMessages(this.props.apiKey);
         }
 
-        this.socket.on('message', (messageData: string) => {
+        this.props.socket.on('message', (messageData: string) => {
             if (messageData !== 'newmessage') {
                 return;
             }
@@ -90,7 +87,6 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
     }
 
     componentWillUnmount(): void {
-        this.socket.disconnect();
         this._isMounted = false;
     }
 

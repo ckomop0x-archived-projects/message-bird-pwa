@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Redirect, Switch} from 'react-router';
 import {Route, RouteComponentProps} from 'react-router-dom';
+import * as socketIOClient from 'socket.io-client';
 import {ThemeProvider} from 'styled-components';
 import FirebaseMessaging, {FirebaseState} from '../../FirebaseMessaging';
 import Login from '../Login/index';
@@ -31,6 +32,7 @@ export interface BalanceResponse {
 }
 
 export default class App extends FirebaseMessaging<AppProps, AppState> {
+    socket: SocketIOClient.Socket | undefined;
     messagebird: any;
     state = {
         apiKey: '',
@@ -44,6 +46,7 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
 
     constructor(props: AppProps) {
         super(props);
+        this.socket = undefined;
         this.initMessaging();
         this.initFirebase();
         this.init();
@@ -73,6 +76,9 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
             },
             this.props.history.push('/')
         );
+        if (this.socket) {
+            this.socket.disconnect();
+        }
     }
 
     initMessagebird(apiKey: string): void {
@@ -92,6 +98,7 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
                     isUserLogged: true
                 });
                 this.setApiKey(apiKey);
+                this.socket = socketIOClient({host: process.env.WEBHOOK_URL});
             }
         );
     }
@@ -139,6 +146,9 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
     }
 
     componentWillUnmount() {
+        if (this.socket) {
+            this.socket.disconnect();
+        }
         window.removeEventListener('online', this.setOfflineStatus);
         window.removeEventListener('offline', this.setOfflineStatus);
     }
@@ -155,6 +165,7 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
                             render={({match}: RouteComponentProps) => {
                                 return (
                                     <Messenger
+                                        socket={this.socket}
                                         error={this.error}
                                         onSubmit={this.onSubmit}
                                         sendNotification={this.sendNotification}
