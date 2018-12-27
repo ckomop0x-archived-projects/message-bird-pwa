@@ -69,21 +69,23 @@ export default class Dashboard extends React.Component<DashboardProps, Dashboard
             this.getMessages(this.props.apiKey);
         }
 
-        this.props.socket.on('message', (messageData: string) => {
-            if (messageData !== 'newmessage') {
-                return;
-            }
+        if (this.props.socket) {
+            this.props.socket.on('message', (messageData: string) => {
+                if (messageData !== 'newmessage') {
+                    return;
+                }
 
-            this.props.sendNotification({
-                body: 'Read message now',
-                click_action: '/#/messenger/',
-                icon: require('../../../../../../assets/favicon.png'),
-                image: require('../../../../../../assets/favicon.png'),
-                title: 'You have a new message'
+                this.props.sendNotification({
+                    body: 'Read message now',
+                    click_action: '/#/messenger/',
+                    icon: require('../../../../../../assets/favicon.png'),
+                    image: require('../../../../../../assets/favicon.png'),
+                    title: 'You have a new message'
+                });
+
+                return this.getMessages(this.props.apiKey);
             });
-
-            return this.getMessages(this.props.apiKey);
-        });
+        }
     }
 
     componentWillUnmount(): void {
