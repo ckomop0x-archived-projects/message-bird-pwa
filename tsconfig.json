@@ -7,6 +7,8 @@
     "outDir": "./dist/",
     "strict": true,
     "preserveConstEnums": true,
+    "strictPropertyInitialization": true,
+    "strictNullChecks": true,
     "removeComments": true,
     "sourceMap": true,
     "noEmitHelpers": true,
@@ -19,7 +21,8 @@
       "es2015",
       "es2017",
       "dom"
-    ]
+    ],
+    "types": ["jquery", "node", "jest"]
   },
   "include": [
     "./src/scripts/server/index.ts",

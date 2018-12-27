@@ -12,6 +12,8 @@ import WebHooksServer from './server';
 const webHookServer = new WebHooksServer();
 const app = webHookServer.getApp();
 
+app.use(express.static(path.join(__dirname, '../client')));
+
 app.post('/webhook', urlencodedParser, (request, response) => {
     if (!request.body) {
         return response.sendStatus(400);
@@ -21,7 +23,6 @@ app.post('/webhook', urlencodedParser, (request, response) => {
     return response.sendStatus(200);
 });
 
-app.use(express.static(path.join(__dirname, '../client')));
 app.get('/', cors(corsOptions), (_req, res) => {
     res.sendFile(path.join(__dirname, '../client/index.html'));
 });

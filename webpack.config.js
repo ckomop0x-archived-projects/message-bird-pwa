@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
@@ -8,6 +7,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const appSettings = require('./settings/app-settings');
 const workboxPlugin = require('workbox-webpack-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 const loaders = [
     'style-loader',
     {
@@ -26,7 +26,6 @@ const loaders = [
 ];
 const PRODUCTION = process.env.NODE_ENV === 'production';
 const webpackPlugins = [
-    new HtmlWebpackPlugin(),
     new HtmlWebpackPlugin({
         title: appSettings.title,
         description: appSettings.title,
@@ -46,9 +45,26 @@ const webpackPlugins = [
             ]
         }
     }),
+    new WebpackPwaManifest({
+        name: appSettings.title,
+        short_name: appSettings.shortTitle,
+        description: appSettings.title,
+        background_color: '#001234',
+        crossorigin: 'use-credentials', //can be null, use-credentials or anonymous
+        icons: [
+            {
+                src: path.resolve('src/assets/favicon.png'),
+                sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
+            },
+            {
+                src: path.resolve('src/assets/favicon.png'),
+                size: '1024x1024' // you can also use the specifications pattern
+            }
+        ]
+    }),
     new workboxPlugin.InjectManifest({
         swSrc: './src/scripts/sw.js',
-        swDest: 'service-worker.js'
+        swDest: 'firebase-messaging-sw.js'
     })
 ];
 
@@ -109,7 +125,7 @@ module.exports = {
                 use: loaders
             },
             {
-                test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
+                test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.(png|jpg|gif|svg)($|\?)/,
                 use: 'url-loader'
             },
             {

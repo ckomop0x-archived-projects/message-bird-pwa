@@ -11,7 +11,7 @@
 // opt-in, read http://bit.ly/CRA-PWA
 declare var global: any;
 
-const isLocalhost = Boolean(
+const isLocalhost: boolean = Boolean(
     window.location.hostname === 'localhost' ||
         // [::1] is the IPv6 localhost address.
         window.location.hostname === '[::1]' ||
@@ -22,7 +22,7 @@ const isLocalhost = Boolean(
 export function register(config: any) {
     if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
         // The URL constructor is available in all browsers that support SW.
-        const publicUrl: any = new URL((process.env.PUBLIC_URL = ''), window.location.href);
+        const publicUrl: URL = new URL((process.env.PUBLIC_URL = ''), window.location.href);
         if (publicUrl.origin !== window.location.origin) {
             // Our service worker won't work if PUBLIC_URL is on a different origin
             // from what our page is served on. This might happen if a CDN is used to
@@ -50,7 +50,7 @@ export function register(config: any) {
     }
 }
 
-function registerValidSW(swUrl: any, config: any) {
+function registerValidSW(swUrl: string, config: any) {
     navigator.serviceWorker
         .register(swUrl)
         .then((registration) => {
@@ -97,7 +97,7 @@ function registerValidSW(swUrl: any, config: any) {
         });
 }
 
-function checkValidServiceWorker(swUrl: any, config: ServiceWorker) {
+function checkValidServiceWorker(swUrl: string, config: ServiceWorker) {
     // Check if the service worker can be found. If it can't reload the page.
     fetch(swUrl)
         .then((response) => {

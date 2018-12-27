@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders the heading 1`] = `
+exports[`<Send> component renders the component 1`] = `
 <styled.div>
   <styled.form
     onSubmit={[Function]}

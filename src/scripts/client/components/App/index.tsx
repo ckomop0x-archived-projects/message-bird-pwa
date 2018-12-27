@@ -1,25 +1,43 @@
 import * as React from 'react';
-import {Redirect, Switch} from 'react-router';
-import {Route, RouteComponentProps} from 'react-router-dom';
+import {Redirect, RouteComponentProps, Switch} from 'react-router';
+import {Route} from 'react-router-dom';
+import * as socketIOClient from 'socket.io-client';
 import {ThemeProvider} from 'styled-components';
-import LeftMenu from '../LeftMenu';
+import FirebaseMessaging from '../../FirebaseMessaging';
 import Login from '../Login/index';
-import RightContainer from '../RightContainer';
+import Messenger from '../Messenger/index';
 import {GlobalStyle} from '../styles/GlobalStyles';
 import {NormalizeStyles} from '../styles/NormalizeStyles';
 import {themeStyles} from '../styles/themeStyles';
 import {MainApp} from './styles';
 
+export interface MessagesCreateParams {
+    recipients: number | number[];
+    originator: number;
+    body: string;
+}
+
+export interface MessageBird {
+    balance: {
+        read: (callback?: (error: Error, balanceResponse: BalanceResponse) => void) => void;
+    };
+    messages: {
+        read: (id: string, callback?: () => void) => void;
+        create: (params: MessagesCreateParams, callback?: () => void) => void;
+    };
+}
+
 interface AppState {
     apiKey: string;
-    isUserLogged: boolean;
     balance?: BalanceResponse;
-    error?: any;
+    error?: Error | undefined;
     isOffline: boolean;
+    tokenValue: string;
+    isRegistered: boolean;
 }
 
 interface AppProps {
-    [key: string]: any;
+    history: RouteComponentProps['history'];
 }
 
 export interface BalanceResponse {
@@ -28,57 +46,59 @@ export interface BalanceResponse {
     type: string;
 }
 
-export default class App extends React.PureComponent<AppProps, AppState> {
-    messagebird: any;
+export default class App extends FirebaseMessaging<AppProps, AppState> {
+    socket: SocketIOClient.Socket | undefined;
+    messagebird: MessageBird | undefined;
 
     constructor(props: AppProps) {
         super(props);
-
+        this.socket = undefined;
+        this.initMessaging();
+        this.initFirebase();
+        this.init();
+        this.onRequestPermission = this.onRequestPermission.bind(this);
+        this.onDelete = this.onDelete.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+        this.sendNotification = this.sendNotification.bind(this);
         this.setOfflineStatus = this.setOfflineStatus.bind(this);
         this.setApiKey = this.setApiKey.bind(this);
         this.initMessagebird = this.initMessagebird.bind(this);
         this.removeApiKey = this.removeApiKey.bind(this);
         this.onExit = this.onExit.bind(this);
+        this.onLogin = this.onLogin.bind(this);
+
         this.state = {
-            apiKey: '',
-            isUserLogged: false,
-            isOffline: !navigator.onLine
+            apiKey: this.getApiKey(),
+            isOffline: !navigator.onLine,
+            tokenValue: '',
+            isRegistered: false,
+            balance: undefined,
+            error: undefined
         };
     }
 
-    setOfflineStatus() {
+    setOfflineStatus(): void {
         this.setState({
             isOffline: !navigator.onLine
         });
     }
 
-    onLogin(): void {
-        this.setState(
-            {
-                isUserLogged: true
-            },
-            this.props.history.push('/sms')
-        );
-    }
-
     onExit(): void {
         this.removeApiKey();
-        this.setState(
-            {
-                isUserLogged: false
-            },
-            this.props.history.push('/')
-        );
+        this.props.history.push('/');
+        if (this.socket) {
+            this.socket.disconnect();
+        }
     }
 
     initMessagebird(apiKey: string): void {
-        const messagebird: any = require('messagebird')(apiKey);
+        const messagebird: MessageBird = require('messagebird')(apiKey);
 
         messagebird.balance.read(
             (error: any, balanceResponse: BalanceResponse): void => {
                 if (error) {
                     this.setState({
-                        error: error
+                        error
                     });
                     return;
                 }
@@ -87,7 +107,7 @@ export default class App extends React.PureComponent<AppProps, AppState> {
                     balance: balanceResponse
                 });
                 this.setApiKey(apiKey);
-                this.onLogin();
+                this.socket = socketIOClient({host: process.env.WEBHOOK_URL});
             }
         );
     }
@@ -106,12 +126,23 @@ export default class App extends React.PureComponent<AppProps, AppState> {
         });
     }
 
+    onLogin(apiKey: string) {
+        this.initMessagebird(apiKey);
+        this.props.history.push('/messenger');
+    }
+
+    getApiKey() {
+        return localStorage.getItem('apiKey') || '';
+    }
+
     init(): void {
-        const apiKey: string | null = localStorage.getItem('apiKey');
+        const apiKey: string = this.getApiKey();
 
         if (apiKey) {
+            this.setState({
+                apiKey
+            });
             this.initMessagebird(apiKey);
-            this.onLogin();
         }
     }
 
@@ -127,13 +158,14 @@ export default class App extends React.PureComponent<AppProps, AppState> {
     }
 
     componentWillUnmount() {
+        if (this.socket) {
+            this.socket.disconnect();
+        }
         window.removeEventListener('online', this.setOfflineStatus);
         window.removeEventListener('offline', this.setOfflineStatus);
     }
 
     render() {
-        const {isUserLogged} = this.state;
-
         return (
             <ThemeProvider theme={themeStyles}>
                 <MainApp id="main-app">
@@ -141,36 +173,39 @@ export default class App extends React.PureComponent<AppProps, AppState> {
                     <GlobalStyle />
                     <Switch>
                         <Route
-                            path="/"
-                            exact={true}
-                            render={() => {
-                                return isUserLogged ? (
-                                    <Redirect to="/sms" />
-                                ) : (
-                                    <Login onKeyChange={this.initMessagebird} error={this.state.error} />
-                                );
-                            }}
-                        />
-                        <Route
-                            path="/sms"
-                            render={({match}: RouteComponentProps) => {
-                                return isUserLogged ? (
-                                    <>
-                                        <LeftMenu onExit={this.onExit} />
-                                        <RightContainer
-                                            match={match}
-                                            isOffline={this.state.isOffline}
-                                            apiKey={this.state.apiKey}
-                                            balance={this.state.balance}
-                                            messagebird={this.messagebird}
-                                        />
-                                    </>
+                            path="/messenger/:filter?"
+                            render={() =>
+                                this.state.apiKey ? (
+                                    <Messenger
+                                        apiKey={this.state.apiKey}
+                                        balance={this.state.balance}
+                                        isOffline={this.state.isOffline}
+                                        messagebird={this.messagebird}
+                                        socket={this.socket}
+                                        error={this.error}
+                                        message={''}
+                                        onSubmit={this.onSubmit}
+                                        sendNotification={this.sendNotification}
+                                        onDelete={this.onDelete}
+                                        onRequestPermission={this.onRequestPermission}
+                                        onExit={this.onExit}
+                                    />
                                 ) : (
                                     <Redirect to="/" />
-                                );
-                            }}
+                                )
+                            }
                         />
-                        <Redirect from="*" to={isUserLogged ? '/sms' : '/'} />
+                        <Route
+                            path="/"
+                            exact={true}
+                            render={() =>
+                                !this.state.apiKey ? (
+                                    <Login onKeyChange={this.onLogin} error={this.state.error} />
+                                ) : (
+                                    <Redirect to="/messenger" />
+                                )
+                            }
+                        />
                     </Switch>
                 </MainApp>
             </ThemeProvider>
