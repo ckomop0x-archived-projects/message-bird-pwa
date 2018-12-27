@@ -18,11 +18,11 @@ export default class WebHooksServer {
             console.log('Running server on port %s', this.port);
         });
 
-        this.io.on('connect', (socket: any) => {
+        this.io.on('connect', (socket: socketIo.Socket) => {
             console.log('Connected client on port %s.', this.port);
-            socket.on('message', (m: any) => {
-                console.log('[server](message): %s', JSON.stringify(m));
-                this.io.emit('message', m);
+            socket.on('message', (message: string) => {
+                console.log('[server](message): %s', JSON.stringify(message));
+                this.io.emit('message', message);
             });
 
             socket.on('disconnect', () => {
@@ -31,7 +31,7 @@ export default class WebHooksServer {
         });
     }
 
-    sendMessage(message: any): void {
+    sendMessage(message: string): void {
         this.io.emit('message', message);
     }
 

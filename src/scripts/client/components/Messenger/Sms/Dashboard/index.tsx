@@ -10,8 +10,10 @@ export interface DashboardState {
 }
 
 export interface DashboardProps {
+    filter: string;
     apiKey: string;
-    [key: string]: any;
+    socket: any;
+    sendNotification({}): void;
 }
 
 const LoadableMessagesTable = Loadable({

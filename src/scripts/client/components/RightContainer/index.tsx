@@ -1,32 +1,59 @@
 import * as React from 'react';
-import {match, Route, Switch} from 'react-router';
-import {BalanceResponse} from '../App/index';
+import {Route, RouteComponentProps, Switch} from 'react-router';
+import {BalanceResponse, MessageBird} from '../App/index';
 import Profile from '../Messenger/Profile/index';
-import Sms from '../Messenger/Sms/sms';
+import Sms from '../Messenger/Sms/Sms';
 import {RightContainerStyled} from './styles';
 
 export interface RightContainerProps {
-    [key: string]: any;
-    match?: match<{}> | null;
     apiKey: string;
-    balance?: BalanceResponse;
-    messagebird: any;
+    balance: BalanceResponse | undefined;
+    socket: any;
     isOffline: boolean;
-    resetUI: () => void;
-    sendNotification: () => void;
+    messagebird: MessageBird | undefined;
+    error: string;
+    message: string;
+    onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+    sendNotification({}): void;
+    onDelete(): void;
+    onRequestPermission(): void;
+}
+
+export interface MessengerRouteParams {
+    filter: string;
 }
 
 const RightContainer = (props: RightContainerProps) => {
     return (
         <RightContainerStyled>
             <Switch>
-                <Route path="/messenger/profile" exact={true} render={() => <Profile {...props} />} />
+                <Route
+                    path="/messenger/profile"
+                    exact={true}
+                    render={() => (
+                        <Profile
+                            balance={props.balance}
+                            error={props.error}
+                            onSubmit={props.onSubmit}
+                            onDelete={props.onDelete}
+                            message={props.message}
+                            onRequestPermission={props.onRequestPermission}
+                        />
+                    )}
+                />
                 <Route
                     path="/messenger/:filter?"
-                    render={({match}: any) => {
-                        const {params} = match;
-                        return <Sms filter={params.filter} {...props} />;
-                    }}
+                    render={({match}: RouteComponentProps<MessengerRouteParams>) => (
+                        <Sms
+                            filter={(match && match.params.filter) || ''}
+                            socket={props.socket}
+                            balance={props.balance}
+                            apiKey={props.apiKey}
+                            isOffline={props.isOffline}
+                            messagebird={props.messagebird}
+                            sendNotification={props.sendNotification}
+                        />
+                    )}
                 />
             </Switch>
         </RightContainerStyled>

@@ -1,8 +1,14 @@
 import * as React from 'react';
+import {BalanceResponse} from '../../App/index';
 import Header from '../../Header/index';
 
 export interface ProfileProps {
-    [key: string]: any;
+    balance: BalanceResponse | undefined;
+    error: string;
+    message: string;
+    onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+    onRequestPermission(): void;
+    onDelete(): void;
 }
 
 const Profile = (props: ProfileProps) => {

@@ -2,18 +2,15 @@ import * as firebase from 'firebase';
 import 'firebase/messaging';
 import * as React from 'react';
 
-export interface FirebaseState {
-    [key: string]: any;
+export interface Notification {
+    body: string;
+    click_action: string;
+    icon: string;
+    image: string;
+    title: string;
 }
 
-export interface FirebaseProps {
-    [key: string]: any;
-}
-
-export default class FirebaseMessaging<
-    Props extends FirebaseProps,
-    State extends FirebaseState
-> extends React.PureComponent<Props, State> {
+export default class FirebaseMessaging<Props extends {}, State extends {}> extends React.PureComponent<Props, State> {
     private key: string =
         'AAAAjYmvxc0:APA91bGL0G4icF0xld2ENcDl0KUVvc1Iac2P3uj-luZuEvIeBrIgaMTShKDKNFsIdTtsn06iMAPJwnbzdD4BNhtDbF18iEhHiZES93uAVOk5_8F0YnxPcxvZkBPUS1I_IGa-yjwb1SsS';
     // messaging: firebase.messaging.Messaging | undefined = undefined;
@@ -64,7 +61,7 @@ export default class FirebaseMessaging<
             await this.messaging.requestPermission();
 
             try {
-                const currentToken: any = await this.messaging.getToken();
+                const currentToken: string | null = await this.messaging.getToken();
 
                 if (currentToken) {
                     this.sendTokenToServer(currentToken);
@@ -81,7 +78,7 @@ export default class FirebaseMessaging<
         }
     }
 
-    async sendNotification(notification?: any) {
+    async sendNotification(notification?: Notification) {
         console.log('Send notification', notification);
 
         try {

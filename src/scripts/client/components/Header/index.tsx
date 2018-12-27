@@ -4,9 +4,8 @@ import CurrencySymbol from '../CurrencySymbol/index';
 import {Balance, CreditType, HeaderStyled, PageTitle, UserBalance} from './styles';
 
 export interface HeaderProps {
-    [key: string]: any;
-    menu?: any;
-    title?: string;
+    menu?: React.ReactNode;
+    title: string;
     balance: BalanceResponse | undefined;
 }
 

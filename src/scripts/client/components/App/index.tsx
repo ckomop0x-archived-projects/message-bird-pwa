@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {Redirect, Switch} from 'react-router';
-import {Route, RouteComponentProps} from 'react-router-dom';
+import {Redirect, RouteComponentProps, Switch} from 'react-router';
+import {Route} from 'react-router-dom';
 import * as socketIOClient from 'socket.io-client';
 import {ThemeProvider} from 'styled-components';
-import FirebaseMessaging, {FirebaseState} from '../../FirebaseMessaging';
+import FirebaseMessaging from '../../FirebaseMessaging';
 import Login from '../Login/index';
 import Messenger from '../Messenger/index';
 import {GlobalStyle} from '../styles/GlobalStyles';
@@ -11,17 +11,33 @@ import {NormalizeStyles} from '../styles/NormalizeStyles';
 import {themeStyles} from '../styles/themeStyles';
 import {MainApp} from './styles';
 
-interface AppState extends FirebaseState {
+export interface MessagesCreateParams {
+    recipients: number | number[];
+    originator: number;
+    body: string;
+}
+
+export interface MessageBird {
+    balance: {
+        read: (callback?: (error: Error, balanceResponse: BalanceResponse) => void) => void;
+    };
+    messages: {
+        read: (id: string, callback?: () => void) => void;
+        create: (params: MessagesCreateParams, callback?: () => void) => void;
+    };
+}
+
+interface AppState {
     apiKey: string;
     balance?: BalanceResponse;
-    error?: any;
+    error?: Error | undefined;
     isOffline: boolean;
     tokenValue: string;
     isRegistered: boolean;
 }
 
 interface AppProps {
-    [key: string]: any;
+    history: RouteComponentProps['history'];
 }
 
 export interface BalanceResponse {
@@ -32,7 +48,7 @@ export interface BalanceResponse {
 
 export default class App extends FirebaseMessaging<AppProps, AppState> {
     socket: SocketIOClient.Socket | undefined;
-    messagebird: any;
+    messagebird: MessageBird | undefined;
 
     constructor(props: AppProps) {
         super(props);
@@ -61,7 +77,7 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
         };
     }
 
-    setOfflineStatus() {
+    setOfflineStatus(): void {
         this.setState({
             isOffline: !navigator.onLine
         });
@@ -76,13 +92,13 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
     }
 
     initMessagebird(apiKey: string): void {
-        const messagebird: any = require('messagebird')(apiKey);
+        const messagebird: MessageBird = require('messagebird')(apiKey);
 
         messagebird.balance.read(
             (error: any, balanceResponse: BalanceResponse): void => {
                 if (error) {
                     this.setState({
-                        error: error
+                        error
                     });
                     return;
                 }
@@ -158,22 +174,21 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
                     <Switch>
                         <Route
                             path="/messenger/:filter?"
-                            render={({match}: RouteComponentProps) =>
+                            render={() =>
                                 this.state.apiKey ? (
                                     <Messenger
-                                        socket={this.socket}
-                                        error={this.error}
-                                        onSubmit={this.onSubmit}
-                                        sendNotification={this.sendNotification}
-                                        onRequestPermission={this.onRequestPermission}
-                                        onDelete={this.onDelete}
-                                        resetUI={this.resetUI}
-                                        onExit={this.onExit}
-                                        match={match}
-                                        isOffline={this.state.isOffline}
                                         apiKey={this.state.apiKey}
                                         balance={this.state.balance}
+                                        isOffline={this.state.isOffline}
                                         messagebird={this.messagebird}
+                                        socket={this.socket}
+                                        error={this.error}
+                                        message={''}
+                                        onSubmit={this.onSubmit}
+                                        sendNotification={this.sendNotification}
+                                        onDelete={this.onDelete}
+                                        onRequestPermission={this.onRequestPermission}
+                                        onExit={this.onExit}
                                     />
                                 ) : (
                                     <Redirect to="/" />

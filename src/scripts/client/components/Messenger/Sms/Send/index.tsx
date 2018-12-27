@@ -1,6 +1,6 @@
 import * as NProgress from 'nprogress';
 import * as React from 'react';
-import {RightContainerProps} from '../../../RightContainer/index';
+import {MessageBird} from '../../../App/index';
 import {DashboardStyled} from '../Dashboard/styles';
 import {ErrorMessage, FormField, FormTextBlock, SendButton, SendForm, SmsCount, TextArea} from './styles';
 
@@ -13,13 +13,18 @@ export interface SendState {
     messageError?: string;
 }
 
+export interface SendProps {
+    isOffline: boolean;
+    messagebird: MessageBird | undefined;
+}
+
 export enum fieldType {
     RECIPIENT = 'Recipient',
     ORIGINATOR = 'Originator',
     MESSAGE = 'Message'
 }
 
-export default class Send extends React.PureComponent<RightContainerProps, SendState> {
+export default class Send extends React.PureComponent<SendProps, SendState> {
     SHORT_NUMBER: string = "Ah, that's a bit too short for a phone number.";
     CANT_BE_BLANK: string = 'cannot be Blank!';
     RECIPIENT_EMPTY: string = `Recipient ${this.CANT_BE_BLANK}`;
@@ -28,7 +33,7 @@ export default class Send extends React.PureComponent<RightContainerProps, SendS
     SEND_SMS: string = 'Send SMS';
     SMS: string = 'SMS';
 
-    constructor(props: RightContainerProps) {
+    constructor(props: SendProps) {
         super(props);
 
         this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -125,11 +130,15 @@ export default class Send extends React.PureComponent<RightContainerProps, SendS
             return alert('This action disabled while app is offline!');
         }
 
-        this.props.messagebird.messages.create({
-            originator: this.state.originator,
-            recipients: [this.state.recipient],
-            body: this.state.message
-        });
+        if (this.props.messagebird) {
+            this.props.messagebird.messages.create({
+                originator: this.state.originator,
+                recipients: [this.state.recipient],
+                body: this.state.message
+            });
+        } else {
+            throw Error('Messagebird is not initialized');
+        }
 
         this.defaultState();
     }

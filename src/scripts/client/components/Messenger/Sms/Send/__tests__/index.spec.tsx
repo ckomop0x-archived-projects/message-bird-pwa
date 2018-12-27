@@ -1,12 +1,11 @@
-import * as React from 'react';
 import {shallow} from 'enzyme';
+import * as React from 'react';
+import messageBirdMock from '../../../../../../../../test/__mocks__/messageBirdMock';
 import Send from '../index';
 
-it('renders the heading', () => {
-    const props = {
-        apiKey: '',
-        messagebird: {}
-    };
-    const wrapper = shallow(<Send {...props} />);
-    expect(wrapper).toMatchSnapshot();
+describe('<Send> component', () => {
+    it('renders the component', () => {
+        const wrapper = shallow(<Send isOffline={false} messagebird={messageBirdMock} />);
+        expect(wrapper).toMatchSnapshot();
+    });
 });
