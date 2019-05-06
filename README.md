@@ -1,6 +1,6 @@
-# Message Bird
+# Message Bird - Progressive Web Application
 
-A small application, that allows working with Message Bird SMS service. With ServiceWorker application also works offline (you can see cached messages). 
+The small messenger application. It allows to work with Message Bird API. Main purpose is to use SMS service. With Service Worker under the hood this application also works offline – you can see cached messages, navigate. When new message is arrived you will recieve a push message with link to messages page inside application.
   
 Try online:  
 https://message-bird.herokuapp.com
