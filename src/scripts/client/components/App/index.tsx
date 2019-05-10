@@ -3,7 +3,7 @@ import {Redirect, RouteComponentProps, Switch} from 'react-router';
 import {Route} from 'react-router-dom';
 import * as socketIOClient from 'socket.io-client';
 import {ThemeProvider} from 'styled-components';
-import FirebaseMessaging from '../../FirebaseMessaging';
+import FirebaseMessaging from '../FirebaseMessaging';
 import Login from '../Login/index';
 import Messenger from '../Messenger/index';
 import {GlobalStyle} from '../styles/GlobalStyles';
@@ -166,6 +166,8 @@ export default class App extends FirebaseMessaging<AppProps, AppState> {
     }
 
     render() {
+        console.log('render App');
+
         return (
             <ThemeProvider theme={themeStyles}>
                 <MainApp id="main-app">

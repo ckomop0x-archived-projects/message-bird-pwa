@@ -1,6 +1,6 @@
 {
   "name": "message-bird-app",
-  "version": "1.1.0",
+  "version": "v1.1.0",
   "description": "Message Bird Application",
   "private": true,
   "scripts": {
@@ -12,7 +12,7 @@
     "heroku-prebuild": "npm install && npm run buildclient && npm run buildserver",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "lint:write": "tslint -c tslint.json 'src/**/*.ts' --fix",
-    "lintcss": "stylelint 'src/**/*.ts'",
+    "lintcss": "stylelint  \"src/**/*.ts\"",
     "lock": "npm shrinkwrap --no-optional",
     "prettier": "prettier --write 'src/**/*.{ts,tsx,json}'",
     "start": "node ./dist/server/index.js",

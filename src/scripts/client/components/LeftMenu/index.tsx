@@ -7,7 +7,9 @@ export interface LeftMenuProps {
     onExit(): void;
 }
 
-const LeftMenu = (props: LeftMenuProps) => {
+const LeftMenu: React.FunctionComponent<LeftMenuProps> = (props) => {
+    console.log('props', props);
+
     return (
         <LeftMenuStyled>
             <Logo href="/" title="Message Bird Application">

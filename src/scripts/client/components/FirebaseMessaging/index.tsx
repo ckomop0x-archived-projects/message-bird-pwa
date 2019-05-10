@@ -10,7 +10,7 @@ export interface Notification {
     title: string;
 }
 
-export default class FirebaseMessaging<Props extends {}, State extends {}> extends React.PureComponent<Props, State> {
+export default class Index<Props extends {}, State extends {}> extends React.PureComponent<Props, State> {
     private key: string =
         'AAAAjYmvxc0:APA91bGL0G4icF0xld2ENcDl0KUVvc1Iac2P3uj-luZuEvIeBrIgaMTShKDKNFsIdTtsn06iMAPJwnbzdD4BNhtDbF18iEhHiZES93uAVOk5_8F0YnxPcxvZkBPUS1I_IGa-yjwb1SsS';
     // messaging: firebase.messaging.Messaging | undefined = undefined;
@@ -180,8 +180,8 @@ export default class FirebaseMessaging<Props extends {}, State extends {}> exten
         this.sendNotification({
             body: 'Test message',
             click_action: '/#/messenger/profile/',
-            icon: require('../../assets/favicon.png'),
-            image: require('../../assets/favicon.png'),
+            icon: require('../../../../assets/favicon.png'),
+            image: require('../../../../assets/favicon.png'),
             title: 'Test message from profile v1.1'
         });
     }

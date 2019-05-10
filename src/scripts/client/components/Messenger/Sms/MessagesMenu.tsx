@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {HeaderMenu, StyledLink} from '../../Header/styles';
 
-const MessagesMenu = () => {
+const MessagesMenu: React.FunctionComponent = () => {
     return (
         <HeaderMenu>
             <StyledLink to="/messenger" exact={true}>
