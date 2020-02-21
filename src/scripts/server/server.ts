@@ -10,7 +10,6 @@ export default class WebHooksServer {
 
     constructor() {
         this.listen();
-        this.sendMessage = this.sendMessage.bind(this);
     }
 
     private listen(): void {
@@ -31,9 +30,9 @@ export default class WebHooksServer {
         });
     }
 
-    sendMessage(message: string): void {
+    sendMessage = (message: string): void => {
         this.io.emit('message', message);
-    }
+    };
 
     getApp(): express.Application {
         return this.app;
