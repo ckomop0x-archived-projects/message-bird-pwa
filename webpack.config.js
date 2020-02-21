@@ -8,6 +8,7 @@ const autoprefixer = require('autoprefixer');
 const appSettings = require('./settings/app-settings');
 const workboxPlugin = require('workbox-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const loaders = [
     'style-loader',
     {
@@ -94,7 +95,10 @@ module.exports = {
     } : {},
     devtool: 'source-map',
     resolve: {
-        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
+        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+        plugins: [
+            new TsConfigPathsPlugin()
+        ]
     },
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
@@ -118,7 +122,7 @@ module.exports = {
         rules: [
             {
                 test: /\.(ts|tsx)$/,
-                loader: 'ts-loader'
+                loader: 'awesome-typescript-loader'
             },
             {
                 test: /\.css/,
