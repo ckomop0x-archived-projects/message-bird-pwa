@@ -1,13 +1,13 @@
-import * as React from 'react';
-import { Redirect, RouteComponentProps, Switch } from 'react-router';
-import { Route } from 'react-router-dom';
-import * as socketIOClient from 'socket.io-client';
-import { ThemeProvider } from 'styled-components';
+// import * as React from 'react';
+// import { Redirect, RouteComponentProps, Switch } from 'react-router';
+// import { Route } from 'react-router-dom';
+// import * as socketIOClient from 'socket.io-client';
+// import { ThemeProvider } from 'styled-components';
 import FirebaseMessaging from '../FirebaseMessaging';
 import Messenger from '../Messenger';
 import { MainApp } from './styles';
 import { BalanceResponse, MessageBird } from './types';
-import { GlobalStyle, NormalizeStyles, themeStyles } from '@client/styles';
+// import { GlobalStyle, NormalizeStyles, themeStyles } from '@client/styles';
 import { Login } from '@client/components';
 
 interface AppState {

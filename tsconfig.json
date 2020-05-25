@@ -1,42 +1,24 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src/scripts",
     "target": "es5",
-    "allowSyntheticDefaultImports": true,
-    "jsx": "react",
-    "noEmit": false,
-    "outDir": "./dist/",
-    "strict": true,
-    "preserveConstEnums": true,
-    "strictPropertyInitialization": true,
-    "strictNullChecks": true,
-    "removeComments": true,
-    "sourceMap": true,
-    "noEmitHelpers": true,
-    "importHelpers": true,
-    "noImplicitAny": true,
-    "noUnusedParameters": true,
-    "module": "commonjs",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
     "moduleResolution": "node",
-    "lib": [
-      "es2015",
-      "es2017",
-      "es2020",
-      "dom"
-    ],
-    "types": ["jquery", "node", "jest"],
-    "paths": {
-      "@client/*": ["client/*"]
-    }
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
   },
-  "include": [
-    "./src/scripts/server/index.ts",
-    "./src/scripts/client/index.tsx"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.spec.ts",
-    "**/*.spec.js"
-  ]
+  "paths": {    
+    "@components/*": ["src/components/*"],
+    "@styles/*": ["src/styles/*"],
+    "@utils/*": ["src/utils/*"]
+  },
+  "exclude": ["node_modules"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/posts.js"]
 }

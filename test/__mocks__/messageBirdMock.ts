@@ -1,4 +1,4 @@
-import {MessageBird} from '../../src/scripts/client/components/App/index';
+import {MessageBird} from '../../src/scripts/client/components/App/index'; 
 
 const messageBirdMock: MessageBird = {
     balance: {
