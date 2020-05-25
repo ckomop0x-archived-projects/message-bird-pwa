@@ -93,31 +93,5 @@
     "tslint-plugin-prettier": "^2.0.1",
     "tslint-react": "^3.6.0",
     "typed-css-modules": "^0.6.3"
-  },
-  "jest": {
-    "collectCoverage": true,
-    "coverageDirectory": "test/coverage",
-    "coverageReporters": [
-      "cobertura",
-      "html"
-    ],
-    "collectCoverageFrom": [
-      "!src/scripts/*.{ts,tsx}",
-      "!src/scripts/**/*.{ts,tsx}",
-      "!src/scripts/*.d.ts",
-      "!src/scripts/**/*.d.ts"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx"
-    ],
-    "transformIgnorePatterns": [
-      "^.+\\.(d.ts)$"
-    ]
   }
 }
