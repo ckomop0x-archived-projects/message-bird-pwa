@@ -116,13 +116,13 @@ export default class Index<
           to: currentToken
         })
       })
-        .then(response => {
+        .then((response) => {
           return response.json();
         })
-        .then(json => {
+        .then((json) => {
           console.log('Response', json);
         })
-        .catch(error => {
+        .catch((error) => {
           this.showError('', error);
         });
     } catch (error) {
@@ -177,7 +177,7 @@ export default class Index<
           // Once token is deleted update UI.
           this.resetUI();
         })
-        .catch(error => {
+        .catch((error) => {
           this.showError('Unable to delete token', error);
         });
     } catch (error) {
@@ -209,20 +209,20 @@ export default class Index<
     }
 
     // handle catch the notification on current page
-    this.messaging.onMessage(payload => {
+    this.messaging.onMessage((payload) => {
       console.log('Message received', payload);
 
       // register fake ServiceWorker for show notification on mobile devices
-      Notification.requestPermission(permission => {
+      Notification.requestPermission((permission) => {
         if (permission === 'granted') {
           navigator.serviceWorker.ready
-            .then(registration => {
+            .then((registration) => {
               // Copy data object to get parameters in the click handler
               payload.data.data = JSON.parse(JSON.stringify(payload.data));
 
               registration.showNotification(payload.data.title, payload.data);
             })
-            .catch(error => {
+            .catch((error) => {
               // registration failed :(
               this.showError('ServiceWorker registration failed', error);
             });

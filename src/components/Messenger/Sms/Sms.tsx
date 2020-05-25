@@ -34,7 +34,7 @@ const Sms = (props: SmsProps) => {
       ) : (
         <Dashboard
           filter={filter}
-          sendNotification={sendNotification}
+          // sendNotification={sendNotification}
           socket={socket}
           apiKey={apiKey}
         />
