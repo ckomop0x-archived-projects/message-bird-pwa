@@ -1,7 +1,7 @@
-import { GlobalStyle, NormalizeStyles, themeStyles } from '@client/styles';
+// import { GlobalStyle, NormalizeStyles, themeStyles } from '@client/styles';
 import { ThemeProvider } from 'styled-components';
-import * as socketIOClient from 'socket.io-client';
-import FirebaseMessaging from '../src/scripts/client/components/FirebaseMessaging';
+// import * as socketIOClient from 'socket.io-client';
+// import FirebaseMessaging from '../src/scripts/client/components/FirebaseMessaging';
 import Login from '../src/components/Login';
 
 const IndexPage = () => {
