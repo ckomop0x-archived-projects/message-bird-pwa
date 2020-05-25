@@ -5,9 +5,13 @@ import { ThemeProvider } from 'styled-components';
 import Login from '../src/components/Login';
 
 const IndexPage = () => {
+  const onKeyChange = (key: string) => {
+    return key;
+  };
+
   return (
     <MainApp id="main-app">
-      <Login />
+      <Login onKeyChange={onKeyChange} />
     </MainApp>
   );
 };

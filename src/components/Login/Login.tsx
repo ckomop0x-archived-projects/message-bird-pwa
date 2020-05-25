@@ -14,7 +14,7 @@ import {
 
 interface LoginProps {
   error?: Error;
-  // onKeyChange(apiKey: string): void;
+  onKeyChange(apiKey: string): void;
 }
 
 interface LoginState {
