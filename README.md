@@ -5,16 +5,20 @@ The small messenger application. It allows to work with Message Bird API. Main p
 Try online:  
 https://message-bird.herokuapp.com
 
+New in-progress version:
+https://messagebird.now.sh
+
 ## Used technologies:
-1. React
-2. TypeScript
-3. Styled-components
-4. NodeJS (Express) 
-5. WebSockets (Socket.io)
-6. Webpack
-7. Service Worker
-8. Jest, Enzyme
-9. Prettier and TSLint for code checking and formatting
+<ol>
+<li>React</li>
+<li>TypeScript</li>
+<li>Styled-components</li>
+<li>NodeJS (Express) </li>
+<li>WebSockets (Socket.io)</li>
+<li>Service Worker</li>
+<li>Jest, Enzyme</li>
+<li>Prettier and TSLint for code checking and formatting</li>
+</ol>
 
 ## Description:
 This application allows a user to fill in a phone number and a message, then send a message to Message Bird API and receive messages via a webhook.
