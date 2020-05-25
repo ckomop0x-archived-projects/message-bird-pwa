@@ -102,8 +102,8 @@
       "html"
     ],
     "collectCoverageFrom": [
-      "src/scripts/*.{ts,tsx}",
-      "src/scripts/**/*.{ts,tsx}",
+      "!src/scripts/*.{ts,tsx}",
+      "!src/scripts/**/*.{ts,tsx}",
       "!src/scripts/*.d.ts",
       "!src/scripts/**/*.d.ts"
     ]
