@@ -118,7 +118,6 @@
     ],
     "transformIgnorePatterns": [
       "^.+\\.(d.ts)$"
-    ],
-    "testRegex": "(/**/__test__/.*|\\.(spec))\\.(ts|tsx|js|jsx)$"
+    ]
   }
 }
