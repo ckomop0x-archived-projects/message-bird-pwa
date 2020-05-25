@@ -14,11 +14,6 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "paths": {    
-    "@components/*": ["src/components/*"],
-    "@styles/*": ["src/styles/*"],
-    "@utils/*": ["src/utils/*"]
-  },
   "exclude": ["node_modules"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/posts.js"]
 }

@@ -1,6 +1,6 @@
 {
   "name": "message-bird-app",
-  "version": "v1.1.1",
+  "version": "v2.0.0",
   "description": "Message Bird Application",
   "private": true,
   "scripts": {    
@@ -16,7 +16,7 @@
     "test:coverage": "npx jest --coverage"
   },
   "author": "paul.klochkov@gmail.com",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@babel/preset-typescript": "^7.9.0",
     "@types/jest": "^25.2.3",
