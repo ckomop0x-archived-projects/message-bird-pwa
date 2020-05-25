@@ -106,33 +106,6 @@
       "src/scripts/**/*.{ts,tsx}",
       "!src/scripts/*.d.ts",
       "!src/scripts/**/*.d.ts"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "setupFiles": [
-      "<rootDir>/test-shim.js",
-      "<rootDir>/test-setup.js"
-    ],
-    "snapshotSerializers": [
-      "<rootDir>/node_modules/enzyme-to-json/serializer"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx"
-    ],
-    "transform": {
-      "^.+\\.(ts|tsx|js|jsx)$": "<rootDir>/test-preprocessor.js"
-    },
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/__mocks__/fileMock.js",
-      "\\.(css|less)$": "identity-obj-proxy"
-    },
-    "transformIgnorePatterns": [
-      "^.+\\.(d.ts)$"
-    ],
-    "testRegex": "(/test/unit/.*|\\.(spec))\\.(ts|tsx|js|jsx)$"
+    ]
   }
 }
