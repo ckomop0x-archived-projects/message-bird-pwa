@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components';
 // import FirebaseMessaging from '../src/scripts/client/components/FirebaseMessaging';
 import Login from '../src/components/Login';
 
-const IndexPage = () => {
+const MainPage = () => {
   const onKeyChange = (key: string) => {
     return key;
   };
@@ -16,7 +16,7 @@ const IndexPage = () => {
   );
 };
 
-export default IndexPage;
+export default MainPage;
 
 import styled from 'styled-components';
 
